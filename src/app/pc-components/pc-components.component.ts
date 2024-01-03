@@ -1,3 +1,5 @@
+// pc-components.component.ts
+
 import { Component, OnInit } from '@angular/core';
 import { PcBuilderService } from '../pc-builder.service';
 
@@ -13,15 +15,20 @@ export class PcComponentsComponent implements OnInit {
 
   constructor(private pcBuilderService: PcBuilderService) {
     this.components = this.pcBuilderService.components;
-    this.selectedComponents = this.pcBuilderService.selectedComponents;
+
+    // Subscribe to changes in selectedComponents
+    this.pcBuilderService.getSelectedComponentsObservable().subscribe((selectedComponents) => {
+      this.selectedComponents = selectedComponents;
+      console.log('Selected Components:', this.selectedComponents);
+    });
   }
 
   toggleSelection(category: string, component: string): void {
     if (category === 'cpu') {
       this.selectedCpu = component;
+      this.pcBuilderService.toggleSelection(category, component);
     } else {
       this.pcBuilderService.toggleSelection(category, component);
-      this.selectedComponents = this.pcBuilderService.selectedComponents; // Update the local selectedComponents
     }
   }
 
@@ -31,6 +38,3 @@ export class PcComponentsComponent implements OnInit {
 
   ngOnInit(): void {}
 }
-
-
-

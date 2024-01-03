@@ -1,4 +1,10 @@
+<!-- selected-components.component.html -->
+
 <div>
-    <h3>Selected Components</h3>
-    <p *ngFor="let component of selectedComponents">{{ component }}</p>
-  </div>
+  <h3>Selected Components</h3>
+  <p *ngFor="let category of getCategoryKeys()">
+    <ng-container *ngIf="selectedComponents[category]">
+      <strong>{{ category }}</strong>: {{ selectedComponents[category] }}
+    </ng-container>
+  </p>
+</div>

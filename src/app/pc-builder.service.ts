@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -14,18 +15,21 @@ export class PcBuilderService {
 
   selectedComponents: any = {};
 
+  private selectedComponentsSubject = new BehaviorSubject<any>(this.selectedComponents);
+
+  constructor() {
+    // Initialize components and selectedComponents as needed
+  }
+
   toggleSelection(category: string, component: string): void {
-    if (!this.selectedComponents[category]) {
-      this.selectedComponents[category] = [];
-    }
+    // Your logic for updating selectedComponents
+    this.selectedComponents[category] = component;
+    this.selectedComponentsSubject.next({ ...this.selectedComponents }); // Emit the updated selectedComponents
+    console.log('Selected Components Updated:', this.selectedComponents);
+  }
 
-    const index = this.selectedComponents[category].indexOf(component);
-
-    if (index === -1) {
-      this.selectedComponents[category].push(component);
-    } else {
-      this.selectedComponents[category].splice(index, 1);
-    }
+  getSelectedComponentsObservable(): Observable<any> {
+    return this.selectedComponentsSubject.asObservable();
   }
 }
 
