@@ -1,0 +1,19 @@
+<div class="container">
+  <h2 class="build-pc-header">
+    Build Your PC
+  </h2>
+  <div *ngFor="let category of getCategoryKeys()" class="component-category">
+    <h3>{{ category }}</h3>
+    <select *ngIf="category === 'cpu'" [(ngModel)]="selectedCpu" (change)="toggleSelection(category, selectedCpu)">
+      <option *ngFor="let component of components[category]" [value]="component">{{ component }}</option>
+    </select>
+    <select *ngIf="category !== 'cpu'" [(ngModel)]="selectedComponents[category]" (change)="toggleSelection(category, selectedComponents[category])">
+      <option *ngFor="let component of components[category]" [value]="component">{{ component }}</option>
+    </select>
+  </div>
+</div>
+
+
+  
+  
+  
