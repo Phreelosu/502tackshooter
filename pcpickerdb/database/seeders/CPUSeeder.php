@@ -11,7 +11,7 @@ class CPUSeeder extends Seeder
     public function run()
     {
         // Adjust the path to your CSV file
-        $csvFile = database_path('assets\csvpaths\cpu.csv');
+        $csvFile = database_path('seeders\assets\csvpaths\cpu.csv');
 
         // Read the CSV file
         $csv = array_map('str_getcsv', file($csvFile));
