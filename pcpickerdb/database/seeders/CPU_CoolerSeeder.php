@@ -57,26 +57,19 @@ class CPU_CoolerSeeder extends Seeder
         
         function insertDataIntoCPUCoolerTable($data, $colorIDs) {
             foreach ($data as $row) {
-                $colorID = $colorIDs[$row['color']];
-                $insertData = [
-                    'Cooler_name' => $row['name'],
-                    'Cooler_price' => $row['price'],
-                    'Cooler_color_ID' => $colorID,
-                ];
-        
-                // Check if RPM values exist before inserting
-                if (isset($row['rpmMin'])) {
-                    $insertData['Cooler_RPM_Min'] = $row['rpmMin'];
+                // Check if price is not empty
+                if (!empty($row['price'])) {
+                    $colorID = $colorIDs[$row['color']];
+                    DB::table('cpu_cooler')->insert([
+                        'Cooler_name' => $row['name'],
+                        'Cooler_price' => $row['price'],
+                        'Cooler_RPM_Min' => $row['rpmMin'],
+                        'Cooler_RPM_Max' => $row['rpmMax'],
+                        'Cooler_color_ID' => $colorID,
+                    ]);
                 }
-        
-                if (isset($row['rpmMax'])) {
-                    $insertData['Cooler_RPM_Max'] = $row['rpmMax'];
-                }
-        
-                DB::table('cpu_cooler')->insert($insertData);
             }
-        }
-        
+        }        
         
         function getColorIDFromTable($color) {
             $colorRow = DB::table('colors')->where('Color', $color)->first();

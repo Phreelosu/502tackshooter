@@ -32,7 +32,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('CPU_Cooler', function (Blueprint $table) {
+        Schema::hasTable('CPU_Cooler', function (Blueprint $table) {
             $table->dropForeign('CPU_Cooler_Cooler_color_ID_foreign');
         });
 
