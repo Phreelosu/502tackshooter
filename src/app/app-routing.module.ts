@@ -9,12 +9,12 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 import { FooterComponent } from './footer/footer.component';
 
 const routes: Routes = [
-  { path: '/home', component: HomeComponent },
-  { path: '/builder', component: BuilderComponent },
-  { path: '/how-to', component: HowToComponent },
-  { path: '/login', component: LoginComponent },
-  { path: '/sign-up', component: SignUpComponent },
-  { path: '/footer', component: FooterComponent },
+  { path: 'home', component: HomeComponent },
+  { path: 'builder', component: BuilderComponent },
+  { path: 'how-to', component: HowToComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'sign-up', component: SignUpComponent },
+  { path: 'footer', component: FooterComponent },
 ]; 
 
 @NgModule({
