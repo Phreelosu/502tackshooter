@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ColorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,3 +18,9 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('/colors', [ColorController::class, 'index']);
+Route::post('/colors', [ColorController::class, 'store']);
+Route::get('/colors/{id}', [ColorController::class, 'show']);
+Route::put('/colors/{id}', [ColorController::class, 'update']);
+Route::delete('/colors/{id}', [ColorController::class, 'destroy']);
