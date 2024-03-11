@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('PC_case', function (Blueprint $table) {
             $table->id();
             $table->string('Case_name', 255);
-            $table->decimal('Case_price', 10, 2);
+            $table->decimal('Case_price')->nullable();
             $table->unsignedBigInteger('Case_type_ID');
             $table->unsignedBigInteger('Case_color_ID');
             $table->integer('PSU_Watts')->nullable();
