@@ -5,3 +5,8 @@ php artisan db:seed --class=CPU_CoolerSeeder
 php artisan db:seed --class=CPUSeeder
 php artisan db:seed --class=SidePanelTypesSeeder
 php artisan db:seed --class=PC_CaseSeeder
+php artisan db:seed --class=GPU_MemorySeeder
+php artisan db:seed --class=GPUSeeder
+
+
+https://github.com/MikesSzinyei/Drinks-Rest-Api

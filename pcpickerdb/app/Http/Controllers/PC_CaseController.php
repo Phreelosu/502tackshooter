@@ -54,29 +54,31 @@ class PC_CaseController extends Controller
     }
 
     /**
-     * Update the specified PC case in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        $pcCase = PC_CaseModel::findOrFail($id);
+ * Update the specified PC case in storage.
+ *
+ * @param  \Illuminate\Http\Request  $request
+ * @param  int  $id
+ * @return \Illuminate\Http\Response
+ */
+public function update(Request $request, $id)
+{
+    $pcCase = PC_CaseModel::findOrFail($id);
 
-        $request->validate([
-            'Case_name' => 'required|string|unique:pc_case,Case_name,' . $pcCase->id,
-            'Case_price' => 'required|numeric',
-            'Case_type_ID' => 'required|exists:case_type,id',
-            'Case_color_ID' => 'required|exists:colors,id',
-            'PSU_Watts' => 'nullable|numeric',
-            'Side_panel_ID' => 'required|exists:side_panel_types,id',
-            'Bay_count' => 'required|numeric',
-        ]);
+    $validatedData = $request->validate([
+        'Case_name' => 'required|string|unique:pc_case,Case_name,' . $pcCase->id,
+        'Case_price' => 'required|numeric',
+        'Case_type_ID' => 'required|exists:case_type,id',
+        'Case_color_ID' => 'required|exists:colors,id',
+        'PSU_Watts' => 'nullable|numeric',
+        'Side_panel_ID' => 'required|exists:side_panel_types,id',
+        'Bay_count' => 'required|numeric',
+    ]);
 
-        $pcCase->update($request->all());
-        return response()->json($pcCase, Response::HTTP_OK);
-    }
+    $pcCase->fill($validatedData)->save();
+
+    return response()->json($pcCase, Response::HTTP_OK);
+}
+
 
     /**
      * Remove the specified PC case from storage.

@@ -26,3 +26,5 @@ Route::resource('colors', ColorController::class)->only([
 Route::resource('pc_case', PC_CaseController::class)->only([
     'index', 'store', 'show', 'update', 'destroy'
 ]);
+
+//Route::put('pc_case/{id}', [PC_CaseController::class, 'update']);
