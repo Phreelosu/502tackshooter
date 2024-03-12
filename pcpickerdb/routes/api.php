@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\PC_CaseController;
+use App\Http\Controllers\UserController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -26,5 +28,8 @@ Route::resource('colors', ColorController::class)->only([
 Route::resource('pc_case', PC_CaseController::class)->only([
     'index', 'store', 'show', 'update', 'destroy'
 ]);
+
+Route::post("/register", [UserController::class, "register"]);
+Route::post("/login", [UserController::class, "login"]);
 
 //Route::put('pc_case/{id}', [PC_CaseController::class, 'update']);
