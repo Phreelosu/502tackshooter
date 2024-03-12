@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            // Add PC config ID column
-            $table->unsignedBigInteger('pc_config_id')->nullable();
+        Schema::table('pc', function (Blueprint $table) {
+            // Add User ID column
+            $table->unsignedBigInteger('user_id')->nullable();
 
             // Add foreign key constraint
-            $table->foreign('pc_config_id')->references('id')->on('pc')->onDelete('set null');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
         });
     }
 
@@ -25,9 +25,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            // Drop PC config ID column
-            $table->dropColumn('pc_config_id');
+        Schema::table('pc', function (Blueprint $table) {
+            // Drop User ID column
+            $table->dropColumn('user_id');
         });
     }
 };
