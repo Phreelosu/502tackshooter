@@ -1,0 +1,12 @@
+.rig-picture{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 300px;
+    border-radius: 8px;
+    height: 400px;
+}
+
+.mx-auto{
+    width: 600px;
+}
