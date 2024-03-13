@@ -9,35 +9,33 @@ class CPU_CoolerSeeder extends Seeder
 {
     public function run(): void
     {
-        function extractDataFromCSV($filePath) {
+        function extractDataFromCSV($filePath, $maxRows = 50) {
             $data = array();
+            $rowCount = 0;
         
             if (($handle = fopen($filePath, "r")) !== FALSE) {
-                // Read the header row to determine the index of each column
                 $headers = fgetcsv($handle, 1000, ",");
                 $nameIndex = array_search('name', $headers);
                 $priceIndex = array_search('price', $headers);
                 $rpmIndex = array_search('rpm', $headers);
                 $colorIndex = array_search('color', $headers);
         
-                while (($row = fgetcsv($handle, 1000, ",")) !== FALSE) {
+                while (($row = fgetcsv($handle, 1000, ",")) !== FALSE && $rowCount < $maxRows) {
                     $name = $row[$nameIndex];
                     $price = $row[$priceIndex];
                     $rpm = $row[$rpmIndex];
                     $color = $row[$colorIndex];
         
-                    // Check if the RPM value contains a comma
                     if (strpos($rpm, ',') !== false) {
-                        // If it does, assume it's a range and split it into min and max values
                         $rpmValues = explode(',', $rpm);
                         $rpmMin = isset($rpmValues[0]) ? (int)$rpmValues[0] : null;
                         $rpmMax = isset($rpmValues[1]) ? (int)$rpmValues[1] : null;
                     } else {
-                        // If not, treat it as a single value for both min and max
                         $rpmMin = $rpmMax = (int)$rpm;
                     }
         
                     $data[] = compact('name', 'price', 'rpmMin', 'rpmMax', 'color');
+                    $rowCount++;
                 }
         
                 fclose($handle);
@@ -81,7 +79,7 @@ class CPU_CoolerSeeder extends Seeder
         
         $csvFilePath = __DIR__ . '/assets/unprocessedpaths/cpu-cooler.csv';
         
-        $data = extractDataFromCSV($csvFilePath);
+        $data = extractDataFromCSV($csvFilePath, 50);
         
         $colors = array_unique(array_column($data, 'color'));
         

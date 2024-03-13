@@ -19,6 +19,9 @@ class CPUSeeder extends Seeder
         // Get the headers (first row) and remove it from the data
         $headers = array_shift($csv);
 
+        // Limit the rows to 50
+        $csv = array_slice($csv, 0, 50);
+
         // Insert data into the database
         foreach ($csv as $row) {
             $data = array_combine($headers, $row);

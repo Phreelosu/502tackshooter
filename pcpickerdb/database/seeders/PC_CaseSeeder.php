@@ -9,8 +9,9 @@ class PC_CaseSeeder extends Seeder
 {
     public function run(): void
     {
-        function extractPcCasesFromCSV($filePath) {
+        function extractPcCasesFromCSV($filePath, $limit = 50) {
             $pcCases = array();
+            $count = 0;
         
             if (($handle = fopen($filePath, "r")) !== FALSE) {
                 $headers = fgetcsv($handle, 1000, ",");
@@ -22,7 +23,8 @@ class PC_CaseSeeder extends Seeder
                 $sidePanelIndex = array_search('side_panel', $headers);
                 $internal35BaysIndex = array_search('internal_35_bays', $headers);
         
-                while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+                while (($data = fgetcsv($handle, 1000, ",")) !== FALSE && $count < $limit) {
+                    $count++;
                     $pcCases[] = [
                         'name' => $data[$nameIndex],
                         'price' => $data[$priceIndex],
@@ -38,7 +40,7 @@ class PC_CaseSeeder extends Seeder
             }
         
             return $pcCases;
-        }
+        }        
         
         function mapPcCaseDataToForeignKeys($pcCases) {
             $mappedPcCases = array();

@@ -9,7 +9,7 @@ class GPUSeeder extends Seeder
 {
     public function run(): void
     {
-        function extractGPUsFromCSV($filePath) {
+        function extractGPUsFromCSV($filePath, $limit = 50) {
             $GPUs = array();
         
             if (($handle = fopen($filePath, "r")) !== FALSE) {
@@ -22,8 +22,10 @@ class GPUSeeder extends Seeder
                 $boostClockIndex = array_search('boost_clock', $headers);
                 $colorIndex = array_search('color', $headers);
                 $lengthIndex = array_search('length', $headers);
+                $count = 0;
         
-                while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+                while (($data = fgetcsv($handle, 1000, ",")) !== FALSE && $count < $limit) {
+                    $count++;
                     $GPUs[] = [
                         'GPU_name' => $data[$nameIndex],
                         'GPU_price' => $data[$priceIndex],
@@ -41,6 +43,7 @@ class GPUSeeder extends Seeder
         
             return $GPUs;
         }
+        
         
         function mapGPUDataToForeignKeys($GPUs) {
             $mappedGPUs = array();
