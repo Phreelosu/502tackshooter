@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('internal_hard_drive', function (Blueprint $table) {
             $table->id();
             $table->string('Hard_drive_name', 255);
-            $table->decimal('Hard_drive_price', 10, 2);
+            $table->decimal('Hard_drive_price')->nullable();
             $table->unsignedBigInteger('Hard_drive_capacity_ID');
             $table->unsignedBigInteger('Hard_drive_type_ID');
             $table->integer('Hard_drive_cache')->nullable();
