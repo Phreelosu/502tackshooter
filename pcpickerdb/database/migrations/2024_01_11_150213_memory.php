@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('memory', function (Blueprint $table) {
             $table->id();
             $table->string('Memory_name', 255);
-            $table->decimal('Memory_price', 10, 2);
+            $table->decimal('Memory_price')->nullable();
             $table->integer('Memory_speed')->nullable();
             $table->unsignedBigInteger('Memory_modules_ID');
             $table->unsignedBigInteger('Memory_color_ID');
