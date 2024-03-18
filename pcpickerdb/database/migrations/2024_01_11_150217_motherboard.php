@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('motherboard', function (Blueprint $table) {
             $table->id();
             $table->string('Motherboard_name', 255);
-            $table->decimal('Motherboard_price', 10, 2);
+            $table->decimal('Motherboard_price')->nullable();
             $table->string('Motherboard_socket', 50)->nullable();
             $table->unsignedBigInteger('Motherboard_form_factor_ID');
             $table->unsignedBigInteger('Motherboard_max_memory_ID');
