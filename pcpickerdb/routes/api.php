@@ -24,13 +24,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // Group routes that require authentication
 Route::middleware('auth:sanctum')->group(function () {
-    //Route::post("/newconfig", [ConfigController::class,"newConfig"]);
-    //Route::put("/modifyconfig", [ConfigController::class,"modifyConfig"]);
-    //Route::delete("/deleteconfig", [ConfigController::class,"deleteConfig"]);
+    Route::post("/newconfig", [ConfigController::class,"newConfig"]);
+    Route::put("/modifyconfig", [ConfigController::class,"modifyConfig"]);
+    Route::delete("/deleteconfig", [ConfigController::class,"deleteConfig"]);
 
     Route::post("/logout", [UserController::class, "logout"]);
 
-    //Route::get("/configs", [ConfigController::class,"getConfigs"]);
+    Route::get("/configs", [ConfigController::class,"getConfigs"]);
 });
 
 // Unauthenticated routes
