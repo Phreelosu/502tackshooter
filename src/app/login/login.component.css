@@ -29,4 +29,9 @@
         text-transform: uppercase;
         cursor: pointer;
     }
+
+    &[disabled]{
+        background-color: #ccc;
+        cursor: not-allowed;
+    }
 }
