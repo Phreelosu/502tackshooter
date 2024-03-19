@@ -1,9 +1,0 @@
-php artisan migrate:fresh
-php artisan db:seed --class=CaseTypeSeeder
-php artisan db:seed --class=ColorSeeder
-php artisan db:seed --class=CPU_CoolerSeeder
-php artisan db:seed --class=CPUSeeder
-php artisan db:seed --class=SidePanelTypesSeeder
-php artisan db:seed --class=PC_CaseSeeder
-php artisan db:seed --class=GPU_MemorySeeder
-php artisan db:seed --class=GPUSeeder

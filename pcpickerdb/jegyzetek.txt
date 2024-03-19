@@ -1,0 +1,55 @@
+php artisan migrate:fresh
+php artisan db:seed
+
+
+register test (POST):
+{
+  "name": "Jane Doe",
+  "email": "jane.doe@example.com",
+  "password": "Secret1234@",
+	"password_confirmation": "Secret1234@"
+}
+
+login test (POST):
+{
+  "email": "jane.doe@example.com",
+  "password": "Secret1234@"
+}
+
+logout test (POST):
+Bearer -> Bearer Token (első két karakter utáni cucc kell)
+{
+  "email": "jane.doe@example.com",
+  "password": "Secret1234@"
+}
+
+newconfig test (POST):
+{
+    "case_id": 1,
+    "cpu_id": 2,
+    "cpu_cooler_id": 3,
+    "gpu_id": 4,
+    "ihd_id": 5,
+    "memory_id": 6,
+    "motherboard_id": 7,
+    "psu_id": 8
+}
+
+modifyconfig test (PUT):
+{
+    "config_id": 1,
+    "case_id": 10,
+    "cpu_id": 11,
+    "cpu_cooler_id": 12,
+    "gpu_id": 13,
+    "ihd_id": 14,
+    "memory_id": 15,
+    "motherboard_id": 16,
+    "psu_id": 17
+}
+
+deleteconfig test (DELETE):
+{
+    "config_id": 1
+}
+

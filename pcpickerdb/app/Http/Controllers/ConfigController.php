@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Config;
+use App\Models\ConfigModel;
 
 class ConfigController extends Controller
 {
@@ -20,7 +20,7 @@ class ConfigController extends Controller
             'psu_id' => 'required|exists:psu,id',
         ]);
 
-        $config = new Config();
+        $config = new ConfigModel();
         $config->case_id = $request->case_id;
         $config->cpu_id = $request->cpu_id;
         $config->cpu_cooler_id = $request->cpu_cooler_id;
@@ -49,7 +49,7 @@ class ConfigController extends Controller
         'psu_id' => 'sometimes|required|exists:psu,id',
     ]);
 
-    $config = Config::findOrFail($request->config_id);
+    $config = ConfigModel::findOrFail($request->config_id);
 
     if ($request->has('case_id')) {
         $config->case_id = $request->case_id;
@@ -87,7 +87,7 @@ public function deleteConfig(Request $request)
         'config_id' => 'required|exists:pc,id',
     ]);
 
-    $config = Config::findOrFail($request->config_id);
+    $config = ConfigModel::findOrFail($request->config_id);
     $config->delete();
 
     return response()->json(['message' => 'Config deleted successfully']);
@@ -96,7 +96,7 @@ public function deleteConfig(Request $request)
 
     public function getConfigs()
     {
-        $configs = Config::where('user_id', auth()->id())->get();
+        $configs = ConfigModel::where('user_id', auth()->id())->get();
         return response()->json($configs);
     }
 }
