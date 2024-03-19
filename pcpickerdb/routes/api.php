@@ -22,6 +22,19 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
+
+// Group routes that require authentication
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post("/logout", [UserController::class, "logout"]);
+});
+
+// Unauthenticated routes
+Route::post("/register", [UserController::class, "register"]);
+Route::post("/login", [UserController::class, "login"]);
+
 Route::resource('colors', ColorController::class)->only([
     'index', 'store', 'show', 'update', 'destroy'
 ]);
@@ -29,7 +42,7 @@ Route::resource('pc_case', PC_CaseController::class)->only([
     'index', 'store', 'show', 'update', 'destroy'
 ]);
 
-Route::post("/register", [UserController::class, "register"]);
-Route::post("/login", [UserController::class, "login"]);
+//Route::post("/register", [UserController::class, "register"]);
+//Route::post("/login", [UserController::class, "login"]);
 
 //Route::put('pc_case/{id}', [PC_CaseController::class, 'update']);

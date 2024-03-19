@@ -59,10 +59,12 @@ class UserController extends ResponseController {
     }
 
     public function logout(Request $request) {
-
-        auth("sanctum")->user()->currentAccessToken()->delete();
-
-    
-        return $this->sendResponse([], "Sikeres kijelentkezés");
+        if (auth("sanctum")->user()) {
+            auth("sanctum")->user()->currentAccessToken()->delete();
+            return $this->sendResponse([], "Sikeres kijelentkezés");
+        } else {
+            return $this->sendError("Nem vagy bejelentkezve", [], 401);
+        }
     }
+    
 }
