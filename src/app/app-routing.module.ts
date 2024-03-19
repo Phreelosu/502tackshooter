@@ -9,6 +9,10 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 import { FooterComponent } from './footer/footer.component';
 
 const routes: Routes = [
+  {
+    path: '', 
+    loadChildren: ()=>
+      import('./public/public.module').then((m)=>m.PublicModule) },
   { path: 'home', component: HomeComponent },
   { path: 'builder', component: BuilderComponent },
   { path: 'how-to', component: HowToComponent },
