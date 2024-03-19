@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('PSU', function (Blueprint $table) {
             $table->id();
-            $table->string('PSU_name', 255)->nullable(false);
-            $table->decimal('PSU_price', 10, 2)->nullable(false);
+            $table->string('PSU_name', 255);
+            $table->decimal('PSU_price', 10, 2)->nullable();
             $table->unsignedBigInteger('PSU_type_ID');
             $table->unsignedBigInteger('PSU_efficiency_ID');
             $table->integer('PSU_watts')->nullable();

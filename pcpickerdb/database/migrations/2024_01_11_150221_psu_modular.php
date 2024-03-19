@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('PSU_Modular', function (Blueprint $table) {
             $table->id();
-            $table->boolean('PSU_Modular');
+            $table->string('PSU_Modular');
             $table->timestamps();
         });
     }

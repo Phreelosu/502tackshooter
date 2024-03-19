@@ -6,6 +6,8 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
+//include 'utilities.php';
+
 class CaseTypeSeeder extends Seeder
 {
     public function run(): void

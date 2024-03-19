@@ -29,10 +29,10 @@ class MOBOSeeder extends Seeder
                         'Motherboard_name' => $data[$nameIndex],
                         'Motherboard_price' => $data[$priceIndex],
                         'Motherboard_socket' => $data[$socketIndex],
-                        'Motherboard_form_factor_ID' => getFormFactorIDFromTable($data[$formFactorIndex]),
-                        'Motherboard_max_memory_ID' => getMaxMemoryIDFromTable($data[$maxMemoryIndex]),
-                        'Motherboard_memory_slots_ID' => getMemorySlotsIDFromTable($data[$memorySlotsIndex]),
-                        'Motherboard_color_ID' => getColorIDFromTable($data[$colorIndex])
+                        'Motherboard_form_factor_ID' => getFormFactorIDsFromTable($data[$formFactorIndex]),
+                        'Motherboard_max_memory_ID' => getMaxMemoryIDsFromTable($data[$maxMemoryIndex]),
+                        'Motherboard_memory_slots_ID' => getMemorySlotsIDsFromTable($data[$memorySlotsIndex]),
+                        'Motherboard_color_ID' => getMOBOColorIDsFromTable($data[$colorIndex])
                     ];
                 }
         
@@ -50,22 +50,22 @@ class MOBOSeeder extends Seeder
             }
         }
         
-        function getFormFactorIDFromTable($formFactor) {
+        function getFormFactorIDsFromTable($formFactor) {
             $formFactorRow = DB::table('mobo_form_factor')->where('MOBO_Form_Factor', $formFactor)->first();
             return $formFactorRow ? $formFactorRow->id : null;
         }
         
-        function getMaxMemoryIDFromTable($maxMemory) {
+        function getMaxMemoryIDsFromTable($maxMemory) {
             $maxMemoryRow = DB::table('mobo_max_memory')->where('MOBO_Max_Memory', $maxMemory)->first();
             return $maxMemoryRow ? $maxMemoryRow->id : null;
         }
         
-        function getMemorySlotsIDFromTable($memorySlots) {
+        function getMemorySlotsIDsFromTable($memorySlots) {
             $memorySlotsRow = DB::table('mobo_memory_slots')->where('MOBO_Memory_Slots', $memorySlots)->first();
             return $memorySlotsRow ? $memorySlotsRow->id : null;
         }
         
-        function getColorIDFromTable($color) {
+        function getMOBOColorIDsFromTable($color) {
             $colorRow = DB::table('colors')->where('Color', $color)->first();
             return $colorRow ? $colorRow->id : null;
         }

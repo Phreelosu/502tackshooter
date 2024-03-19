@@ -22,13 +22,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 // Group routes that require authentication
 Route::middleware('auth:sanctum')->group(function () {
+    //Route::post("/newconfig", [ConfigController::class,"newConfig"]);
+    //Route::put("/modifyconfig", [ConfigController::class,"modifyConfig"]);
+    //Route::delete("/deleteconfig", [ConfigController::class,"deleteConfig"]);
+
     Route::post("/logout", [UserController::class, "logout"]);
+
+    //Route::get("/configs", [ConfigController::class,"getConfigs"]);
 });
 
 // Unauthenticated routes

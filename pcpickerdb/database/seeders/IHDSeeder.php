@@ -30,11 +30,11 @@ class IHDSeeder extends Seeder
                     $internalHardDrives[] = [
                         'Hard_drive_name' => $data[$nameIndex],
                         'Hard_drive_price' => $price,
-                        'Hard_drive_capacity_ID' => getHardDriveCapacityID($data[$capacityIndex]),
-                        'Hard_drive_type_ID' => getHardDriveTypeID($data[$typeIndex]),
+                        'Hard_drive_capacity_ID' => getHardDriveCapacityIDs($data[$capacityIndex]),
+                        'Hard_drive_type_ID' => getHardDriveTypeIDs($data[$typeIndex]),
                         'Hard_drive_cache' => $cache,
-                        'Hard_drive_form_factor_ID' => getHardDriveFormFactorID($data[$formFactorIndex]),
-                        'Hard_drive_interface_ID' => getHardDriveInterfaceID($data[$interfaceIndex])
+                        'Hard_drive_form_factor_ID' => getHardDriveFormFactorIDs($data[$formFactorIndex]),
+                        'Hard_drive_interface_ID' => getHardDriveInterfaceIDs($data[$interfaceIndex])
                     ];
                 }
         
@@ -44,22 +44,22 @@ class IHDSeeder extends Seeder
             return $internalHardDrives;
         }        
         
-        function getHardDriveCapacityID($capacity) {
+        function getHardDriveCapacityIDs($capacity) {
             $capacityRow = DB::table('ihd_capacity')->where('IHD_Capacity', $capacity)->first();
             return $capacityRow ? $capacityRow->id : null;
         }
         
-        function getHardDriveTypeID($type) {
+        function getHardDriveTypeIDs($type) {
             $typeRow = DB::table('ihd_type')->where('IHD_Type', $type)->first();
             return $typeRow ? $typeRow->id : null;
         }
         
-        function getHardDriveFormFactorID($formFactor) {
+        function getHardDriveFormFactorIDs($formFactor) {
             $formFactorRow = DB::table('ihd_form_factor')->where('ihd_form_factor', $formFactor)->first();
             return $formFactorRow ? $formFactorRow->id : null;
         }
         
-        function getHardDriveInterfaceID($interface) {
+        function getHardDriveInterfaceIDs($interface) {
             $interfaceRow = DB::table('ihd_interface')->where('ihd_interface', $interface)->first();
             return $interfaceRow ? $interfaceRow->id : null;
         }

@@ -44,10 +44,10 @@ class CPU_CoolerSeeder extends Seeder
             return $data;
         }        
         
-        function mapColorsToIDs($colors) {
+        function mapCPUCoColorsToIDs($colors) {
             $colorIDs = array();
             foreach ($colors as $color) {
-                $colorID = getColorIDFromTable($color);
+                $colorID = getColorIDsFromTable($color);
                 $colorIDs[$color] = $colorID;
             }
             return $colorIDs;
@@ -69,7 +69,7 @@ class CPU_CoolerSeeder extends Seeder
             }
         }        
         
-        function getColorIDFromTable($color) {
+        function getColorIDsFromTable($color) {
             $colorRow = DB::table('colors')->where('Color', $color)->first();
             if ($colorRow) {
                 return $colorRow->id;
@@ -83,7 +83,7 @@ class CPU_CoolerSeeder extends Seeder
         
         $colors = array_unique(array_column($data, 'color'));
         
-        $colorIDs = mapColorsToIDs($colors);
+        $colorIDs = mapCPUCoColorsToIDs($colors);
         
         insertDataIntoCPUCoolerTable($data, $colorIDs);
     }

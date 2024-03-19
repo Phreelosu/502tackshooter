@@ -30,8 +30,8 @@ class MemorySeeder extends Seeder
                         'Memory_name' => $data[$nameIndex],
                         'Memory_price' => $data[$priceIndex] !== '' ? $data[$priceIndex] : null,
                         'Memory_speed' => $speed,
-                        'Memory_modules_ID' => getMemoryModuleIDFromTable($data[$modulesIndex]),
-                        'Memory_color_ID' => getMemoryColorIDFromTable($data[$colorIndex]),
+                        'Memory_modules_ID' => getMemoryModuleIDsFromTable($data[$modulesIndex]),
+                        'Memory_color_ID' => getMemoryColorIDsFromTable($data[$colorIndex]),
                         'First_word_latency' => $data[$firstWordLatencyIndex],
                         'CAS_latency' => $data[$casLatencyIndex],
                     ];
@@ -57,12 +57,12 @@ class MemorySeeder extends Seeder
             return preg_replace("/[^0-9]/", "", $speed);
         }
         
-        function getMemoryModuleIDFromTable($moduleName) {
+        function getMemoryModuleIDsFromTable($moduleName) {
             $moduleRow = DB::table('memory_modules')->where('memory_modules', $moduleName)->first();
             return $moduleRow ? $moduleRow->id : null;
         }
         
-        function getMemoryColorIDFromTable($color) {
+        function getMemoryColorIDsFromTable($color) {
             $colorRow = DB::table('colors')->where('Color', $color)->first();
             return $colorRow ? $colorRow->id : null;
         }

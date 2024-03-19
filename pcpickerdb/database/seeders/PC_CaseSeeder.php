@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
+//include 'utilities.php';
+
 class PC_CaseSeeder extends Seeder
 {
     public function run(): void
@@ -45,9 +47,9 @@ class PC_CaseSeeder extends Seeder
         function mapPcCaseDataToForeignKeys($pcCases) {
             $mappedPcCases = array();
             foreach ($pcCases as $pcCase) {
-                $caseTypeID = getCaseTypeIDFromTable($pcCase['type']);
-                $caseColorID = getCaseColorIDFromTable($pcCase['color']);
-                $sidePanelID = getSidePanelIDFromTable($pcCase['side_panel']);
+                $caseTypeID = getCaseTypeIDsFromTable($pcCase['type']);
+                $caseColorID = getCaseColorIDsFromTable($pcCase['color']);
+                $sidePanelID = getSidePanelIDsFromTable($pcCase['side_panel']);
                 
                 // Handle missing PSU_Watts value
                 $psuWatts = $pcCase['psu'] !== '' ? $pcCase['psu'] : null;
@@ -77,17 +79,17 @@ class PC_CaseSeeder extends Seeder
             }
         }
         
-        function getCaseTypeIDFromTable($caseType) {
+        function getCaseTypeIDsFromTable($caseType) {
             $caseTypeRow = DB::table('case_type')->where('Case_type', $caseType)->first();
             return $caseTypeRow ? $caseTypeRow->id : null;
         }
         
-        function getCaseColorIDFromTable($caseColor) {
+        function getCaseColorIDsFromTable($caseColor) {
             $caseColorRow = DB::table('colors')->where('Color', $caseColor)->first();
             return $caseColorRow ? $caseColorRow->id : null;
         }
         
-        function getSidePanelIDFromTable($sidePanelType) {
+        function getSidePanelIDsFromTable($sidePanelType) {
             $sidePanelRow = DB::table('side_panel_types')->where('Side_Panel', $sidePanelType)->first();
             return $sidePanelRow ? $sidePanelRow->id : null;
         }

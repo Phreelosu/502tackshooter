@@ -48,8 +48,8 @@ class GPUSeeder extends Seeder
         function mapGPUDataToForeignKeys($GPUs) {
             $mappedGPUs = array();
             foreach ($GPUs as $GPU) {
-                $gpuMemoryID = getGPUMemoryIDFromTable($GPU['GPU_memory_ID']);
-                $gpuColorID = getGPUColorIDFromTable($GPU['GPU_color_ID']);
+                $gpuMemoryID = getGPUMemoryIDsFromTable($GPU['GPU_memory_ID']);
+                $gpuColorID = getGPUColorIDsFromTable($GPU['GPU_color_ID']);
                 
                 // Handle missing or empty values
                 $gpuPrice = !empty($GPU['GPU_price']) ? $GPU['GPU_price'] : null;
@@ -81,12 +81,12 @@ class GPUSeeder extends Seeder
             }
         }
         
-        function getGPUMemoryIDFromTable($gpuMemory) {
+        function getGPUMemoryIDsFromTable($gpuMemory) {
             $gpuMemoryRow = DB::table('gpu_memory')->where('GPU_Memory', $gpuMemory)->first();
             return $gpuMemoryRow ? $gpuMemoryRow->id : null;
         }
         
-        function getGPUColorIDFromTable($gpuColor) {
+        function getGPUColorIDsFromTable($gpuColor) {
             $gpuColorRow = DB::table('colors')->where('Color', $gpuColor)->first();
             return $gpuColorRow ? $gpuColorRow->id : null;
         }
