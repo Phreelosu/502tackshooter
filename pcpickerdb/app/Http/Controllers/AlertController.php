@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Mail;
 class AlertController extends Controller {
     
     public function sendEmail($user, $time) {
+        error_log("Sending email to: " . $user); // Debug statement
 
         $content =[
             "title"=>"Felhasználó blokkolva",
@@ -17,7 +18,6 @@ class AlertController extends Controller {
             "time"=>$time
 
         ];
-        //xotob99236@ricorit.com
         Mail::to("ratkaydaniel@ktch.hu")->send(new AlertMail($content));
     }
 }

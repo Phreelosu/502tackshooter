@@ -28,7 +28,7 @@ class BanController extends Controller
 
     public function setBannedTime($email){
         $user=User::where("email", $email)->first();
-        $bannedTime = Carbon::now()->addHours()->addSeconds(60);
+        $bannedTime = Carbon::now()->addHours()->addSeconds(60)->setTimezone('Europe/Budapest');
         $user->banned_time=$bannedTime;
         $user->save();
         
