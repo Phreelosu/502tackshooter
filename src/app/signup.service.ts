@@ -11,4 +11,8 @@ export class SignupService {
   signUp(data: any) {
     return this.http.post<any>('http://localhost:8000/api/register', data);
   }
+
+  logIn(data: any){
+    return this.http.post<any>('http://localhost:8000/api/login', data);
+  }
 }

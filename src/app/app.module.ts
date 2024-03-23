@@ -12,6 +12,7 @@ import { FooterComponent } from './footer/footer.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SignupComponent } from './sign-up/sign-up.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { AuthService } from './auth.service';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     HttpClientModule,
   ],
   providers: [
-    SignupComponent
+    SignupComponent,
+    AuthService,
   ],
   bootstrap: [AppComponent]
 })

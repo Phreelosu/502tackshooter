@@ -1,33 +1,19 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  users: any[] = [
-    {
-      id: 1,
-      name: 'David',
-      username: 'david',
-      password: 'abc'
-    },
-    {
-      id: 2,
-      name: 'XYZ',
-      username: 'xyz',
-      password: 'abc'
-    },
-  ];
-  session: any;
-  constructor() {}
 
-  login(username: string, password: string){
-    let user = this.users.find((u)=>u.username===username && u.password===password);
-    if(user){
-      this.session = user;
-      localStorage.setItem('session' , JSON.stringify(this.session));
-    }
+  constructor(private http: HttpClient) {}
 
-    return user;
+  login(username: string, password: string): Observable<any> {
+    return this.http.post<any>('http://localhost:8000/api/login', { username, password });
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem('token');
   }
 }
