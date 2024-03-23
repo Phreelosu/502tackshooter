@@ -9,6 +9,6 @@ export class SignupService {
   constructor(private http: HttpClient) { }
 
   signUp(data: any) {
-    return this.http.post<any>('http://your-backend-url/signup', data);
+    return this.http.post<any>('http://localhost:8000/api/register', data);
   }
 }

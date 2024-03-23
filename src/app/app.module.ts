@@ -10,7 +10,7 @@ import { BuilderComponent } from './builder/builder.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { SignUpComponent } from './sign-up/sign-up.component';
+import { SignupComponent } from './sign-up/sign-up.component';
 import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
@@ -22,7 +22,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     BuilderComponent,
     HeaderComponent,
     FooterComponent,
-    SignUpComponent
+    SignupComponent
   ],
 
   imports: [
@@ -32,7 +32,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     ReactiveFormsModule,
     HttpClientModule,
   ],
-  providers: [],
+  providers: [
+    SignupComponent
+  ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
