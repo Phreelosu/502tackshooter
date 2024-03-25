@@ -1,0 +1,50 @@
+.mx-auto{
+    width: 800px;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.part-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.part {
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.part-details {
+    padding: 20px;
+}
+
+.part-details h2 {
+    margin-top: 0;
+}
+
+.part-details p {
+    margin: 5px 0;
+}
+
+.part-details p:last-child {
+    font-weight: bold;
+}
+
