@@ -13,4 +13,9 @@ class PSUEfficiencyController extends Controller
         $psu_efficiency = PSUEfficiencyModel::all();
         return response()->json($psu_efficiency);
     }
+    public function show($id)
+    {
+        $psu_efficiency = PSUEfficiencyModel::findOrFail($id);
+        return response()->json($psu_efficiency);
+    }
 }

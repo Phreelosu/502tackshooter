@@ -13,4 +13,9 @@ class CaseTypeController extends Controller
         $case_type = CaseTypeModel::all();
         return response()->json($case_type);
     }
+    public function show($id)
+    {
+        $case_type = CaseTypeModel::findOrFail($id);
+        return response()->json($case_type);
+    }
 }

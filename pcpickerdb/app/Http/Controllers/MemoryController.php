@@ -13,4 +13,9 @@ class MemoryController extends Controller
         $memory = MemoryModel::all();
         return response()->json($memory);
     }
+    public function show($id)
+    {
+        $memory = MemoryModel::findOrFail($id);
+        return response()->json($memory);
+    }
 }

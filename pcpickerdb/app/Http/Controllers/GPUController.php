@@ -13,4 +13,9 @@ class GPUController extends Controller
         $gpu = GPUModel::all();
         return response()->json($gpu);
     }
+    public function show($id)
+    {
+        $gpu = GPUModel::findOrFail($id);
+        return response()->json($gpu);
+    }
 }

@@ -13,4 +13,9 @@ class GPUMemoryController extends Controller
         $gpu_memory = GPUMemoryModel::all();
         return response()->json($gpu_memory);
     }
+    public function show($id)
+    {
+        $gpu_memory = GPUMemoryModel::findOrFail($id);
+        return response()->json($gpu_memory);
+    }
 }

@@ -13,4 +13,9 @@ class MOBOMSController extends Controller
         $mobo_memory_slots = MOBOMSModel::all();
         return response()->json($mobo_memory_slots);
     }
+    public function show($id)
+    {
+        $mobo_memory_slots = MOBOMSModel::findOrFail($id);
+        return response()->json($mobo_memory_slots);
+    }
 }

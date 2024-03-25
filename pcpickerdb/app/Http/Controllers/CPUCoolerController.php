@@ -13,4 +13,9 @@ class CPUCoolerController extends Controller
         $cpu_cooler = CPUCoolerModel::all();
         return response()->json($cpu_cooler);
     }
+    public function show($id)
+    {
+        $cpu_cooler = CPUCoolerModel::findOrFail($id);
+        return response()->json($cpu_cooler);
+    }
 }

@@ -13,4 +13,9 @@ class PSUTypeController extends Controller
         $psu_type = PSUTypeModel::all();
         return response()->json($psu_type);
     }
+    public function show($id)
+    {
+        $psu_type = PSUTypeModel::findOrFail($id);
+        return response()->json($psu_type);
+    }
 }

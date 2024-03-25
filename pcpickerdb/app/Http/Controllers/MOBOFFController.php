@@ -13,4 +13,9 @@ class MOBOFFController extends Controller
         $mobo_form_factor = MOBOFFModel::all();
         return response()->json($mobo_form_factor);
     }
+    public function show($id)
+    {
+        $mobo_form_factor = MOBOFFModel::findOrFail($id);
+        return response()->json($mobo_form_factor);
+    }
 }

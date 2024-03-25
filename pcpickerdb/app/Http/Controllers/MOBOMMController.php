@@ -13,4 +13,9 @@ class MOBOMMController extends Controller
         $mobo_max_memory = MOBOMMModel::all();
         return response()->json($mobo_max_memory);
     }
+    public function show($id)
+    {
+        $mobo_max_memory = MOBOMMModel::findOrFail($id);
+        return response()->json($mobo_max_memory);
+    }
 }

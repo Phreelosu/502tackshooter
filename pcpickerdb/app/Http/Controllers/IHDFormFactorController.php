@@ -13,4 +13,9 @@ class IHDFormFactorController extends Controller
         $ihd_form_factor = IHDFormFactorModel::all();
         return response()->json($ihd_form_factor);
     }
+    public function show($id)
+    {
+        $ihd_form_factor = IHDFormFactorModel::findOrFail($id);
+        return response()->json($ihd_form_factor);
+    }
 }

@@ -13,4 +13,9 @@ class MOBOController extends Controller
         $motherboard = MOBOModel::all();
         return response()->json($motherboard);
     }
+    public function show($id)
+    {
+        $motherboard = MOBOModel::findOrFail($id);
+        return response()->json($motherboard);
+    }
 }

@@ -13,4 +13,9 @@ class IHDInterfaceController extends Controller
         $ihd_interface = IHDInterfaceModel::all();
         return response()->json($ihd_interface);
     }
+    public function show($id)
+    {
+        $ihd_interface = IHDInterfaceModel::findOrFail($id);
+        return response()->json($ihd_interface);
+    }
 }

@@ -13,4 +13,9 @@ class PSUModularController extends Controller
         $psu_modular = PSUModularModel::all();
         return response()->json($psu_modular);
     }
+    public function show($id)
+    {
+        $psu_modular = PSUModularModel::findOrFail($id);
+        return response()->json($psu_modular);
+    }
 }

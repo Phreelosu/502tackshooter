@@ -13,4 +13,9 @@ class IHDController extends Controller
         $internal_hard_drive = IHDModel::all();
         return response()->json($internal_hard_drive);
     }
+    public function show($id)
+    {
+        $internal_hard_drive = IHDModel::findOrFail($id);
+        return response()->json($internal_hard_drive);
+    }
 }

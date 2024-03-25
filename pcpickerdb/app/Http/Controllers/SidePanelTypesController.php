@@ -13,4 +13,9 @@ class SidePanelTypesController extends Controller
         $side_panel_types = SidePanelTypesModel::all();
         return response()->json($side_panel_types);
     }
+    public function show($id)
+    {
+        $side_panel_types = SidePanelTypesModel::findOrFail($id);
+        return response()->json($side_panel_types);
+    }
 }

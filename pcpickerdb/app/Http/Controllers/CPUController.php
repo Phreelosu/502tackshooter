@@ -13,4 +13,9 @@ class CPUController extends Controller
         $cpu = CPUModel::all();
         return response()->json($cpu);
     }
+    public function show($id)
+    {
+        $cpu = CPUModel::findOrFail($id);
+        return response()->json($cpu);
+    }
 }

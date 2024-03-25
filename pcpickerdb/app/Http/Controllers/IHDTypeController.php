@@ -13,4 +13,9 @@ class IHDTypeController extends Controller
         $ihd_type = IHDTypeModel::all();
         return response()->json($ihd_type);
     }
+    public function show($id)
+    {
+        $ihd_type = IHDTypeModel::findOrFail($id);
+        return response()->json($ihd_type);
+    }
 }

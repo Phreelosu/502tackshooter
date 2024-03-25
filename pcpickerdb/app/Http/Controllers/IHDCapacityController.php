@@ -13,4 +13,9 @@ class IHDCapacityController extends Controller
         $ihd_capacity = IHDCapacityModel::all();
         return response()->json($ihd_capacity);
     }
+    public function show($id)
+    {
+        $ihd_capacity = IHDCapacityModel::findOrFail($id);
+        return response()->json($ihd_capacity);
+    }
 }
