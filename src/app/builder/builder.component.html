@@ -1,27 +1,62 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PC Part List</title>
-    <link rel="stylesheet" href="builder.component.css">
-</head>
-<body>
-
 <div class="container">
-    <h1>PC Part List</h1>
-    <ul class="part-list">
-        <li class="part">
-            <div class="part-details">
-                <h2>Processor</h2>
-                <p>Intel Core i7-10700K</p>
-                <p>$379.99</p>
-            </div>
-        </li>
-        <!-- Add more list items for other parts -->
-    </ul>
-</div>
+    <div class="row">
+      <!-- Component and Selection column -->
+      <div class="col">
+        <h3 class="text-center">Choose your parts</h3>
+        <div class="row">
+          <!-- Component column -->
+          <div class="col">
+            <ul class="list-group">
+              <li class="list-group-item">
+                <label for="processor">Processor</label>
+                <select id="processor" class="form-select">
+                  <option selected disabled>Choose a Processor</option>
+                  <!-- Populate options dynamically based on available processors -->
+                </select>
+              </li>
+              <li class="list-group-item">
+                <label for="motherboard">Motherboard</label>
+                <select id="motherboard" class="form-select">
+                  <option selected disabled>Choose a Motherboard</option>
+                  <!-- Populate options dynamically based on available motherboards -->
+                </select>
+              </li>
+              <li class="list-group-item">
+                <label for="memory">Memory</label>
+                <select id="memory" class="form-select">
+                  <option selected disabled>Choose Memory</option>
+                  <!-- Populate options dynamically based on available memory options -->
+                </select>
+              </li>
+              <li class="list-group-item">
+                <label for="cooler">Processor Cooler</label>
+                <select id="cooler" class="form-select">
+                  <option selected disabled>Choose a Cooler</option>
+                  <!-- Populate options dynamically based on available coolers -->
+                </select>
+              </li>
+              <li class="list-group-item">
+                <label for="psu">Power Supply</label>
+                <select id="psu" class="form-select">
+                  <option selected disabled>Choose a PSU</option>
+                  <!-- Populate options dynamically based on available PSUs -->
+                </select>
+              </li>
+              <li class="list-group-item">
+                <label for="case">Case</label>
+                <select id="case" class="form-select">
+                  <option selected disabled>Choose a Case</option>
+                  <!-- Populate options dynamically based on available cases -->
+                </select>
+              </li>
+            </ul>
+          </div>
+  
+          <!-- Selection column (can be expanded later with chosen components) -->
+          
+          </div>
+        </div>
+      </div>
+    </div>
 
-</body>
-</html>
-
+  
