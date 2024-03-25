@@ -6,6 +6,26 @@ use App\Http\Controllers\ColorController;
 use App\Http\Controllers\PC_CaseController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ConfigController;
+use App\Http\Controllers\CaseTypeController;
+use App\Http\Controllers\CPUController;
+use App\Http\Controllers\CPUCoolerController;
+use App\Http\Controllers\GPUController;
+use App\Http\Controllers\GPUMemoryController;
+use App\Http\Controllers\IHDCapacityController;
+use App\Http\Controllers\IHDController;
+use App\Http\Controllers\IHDFormFactorController;
+use App\Http\Controllers\IHDTypeController;
+use App\Http\Controllers\MemoryController;
+use App\Http\Controllers\MemoryModulesController;
+use App\Http\Controllers\MOBOController;
+use App\Http\Controllers\MOBOFFController;
+use App\Http\Controllers\MOBOMMController;
+use App\Http\Controllers\MOBOMSController;
+use App\Http\Controllers\PSUEfficiencyController;
+use App\Http\Controllers\PSUModularController;
+use App\Http\Controllers\PSUTypeController;
+use App\Http\Controllers\PSUController;
+use App\Http\Controllers\SidePanelTypesController;
 
 
 /*
@@ -39,73 +59,73 @@ Route::post("/register", [UserController::class, "register"]);
 Route::post("/login", [UserController::class, "login"]);
 
 //Indexed for Builder component
-Route::resource('case_type', PC_CaseController::class)->only([
+Route::resource('case_type', CaseTypeController::class)->only([
     'index'
 ]);
-Route::resource('colors', PC_CaseController::class)->only([
+Route::resource('colors', ColorController::class)->only([
     'index'
 ]);
-Route::resource('cpu', PC_CaseController::class)->only([
+Route::resource('cpu', CPUController::class)->only([
     'index'
 ]);
-Route::resource('cpu_cooler', PC_CaseController::class)->only([
+Route::resource('cpu_cooler', CPUCoolerController::class)->only([
     'index'
 ]);
-Route::resource('gpu_memory', PC_CaseController::class)->only([
+Route::resource('gpu_memory', GPUMemoryController::class)->only([
     'index'
 ]);
-Route::resource('gpu', PC_CaseController::class)->only([
+Route::resource('gpu', GPUController::class)->only([
     'index'
 ]);
-Route::resource('ihd_capacity', PC_CaseController::class)->only([
+Route::resource('ihd_capacity', IHDCapacityController::class)->only([
     'index'
 ]);
-Route::resource('ihd_form_factor', PC_CaseController::class)->only([
+Route::resource('ihd_form_factor', IHDFormFactorController::class)->only([
     'index'
 ]);
-Route::resource('ihd_interface', PC_CaseController::class)->only([
+Route::resource('ihd_interface', IHDInterfaceController::class)->only([
     'index'
 ]);
-Route::resource('ihd_type', PC_CaseController::class)->only([
+Route::resource('ihd_type', IHDTypeController::class)->only([
     'index'
 ]);
-Route::resource('internal_hard_drive', PC_CaseController::class)->only([
+Route::resource('internal_hard_drive', IHDController::class)->only([
     'index'
 ]);
-Route::resource('memory_modules', PC_CaseController::class)->only([
+Route::resource('memory_modules', MemoryModulesController::class)->only([
     'index'
 ]);
-Route::resource('memory', PC_CaseController::class)->only([
+Route::resource('memory', MemoryController::class)->only([
     'index'
 ]);
-Route::resource('mobo_form_factor', PC_CaseController::class)->only([
+Route::resource('mobo_form_factor', MOBOFFController::class)->only([
     'index'
 ]);
-Route::resource('mobo_max_memory', PC_CaseController::class)->only([
+Route::resource('mobo_max_memory', MOBOMMController::class)->only([
     'index'
 ]);
-Route::resource('mobo_memory_slots', PC_CaseController::class)->only([
+Route::resource('mobo_memory_slots', MOBOMSController::class)->only([
     'index'
 ]);
-Route::resource('motherboard', PC_CaseController::class)->only([
+Route::resource('motherboard', MOBOController::class)->only([
     'index'
 ]);
-Route::resource('side_panel_types', PC_CaseController::class)->only([
+Route::resource('side_panel_types', SidePanelTypesController::class)->only([
     'index'
 ]);
 Route::resource('pc_case', PC_CaseController::class)->only([
     'index'
 ]);
-Route::resource('psu_efficiency', PC_CaseController::class)->only([
+Route::resource('psu_efficiency', PSUEfficiencyController::class)->only([
     'index'
 ]);
-Route::resource('psu_modular', PC_CaseController::class)->only([
+Route::resource('psu_modular', PSUModularController::class)->only([
     'index'
 ]);
-Route::resource('psu_type', PC_CaseController::class)->only([
+Route::resource('psu_type', PSUTypeController::class)->only([
     'index'
 ]);
-Route::resource('psu', PC_CaseController::class)->only([
+Route::resource('psu', PSUController::class)->only([
     'index'
 ]);
 

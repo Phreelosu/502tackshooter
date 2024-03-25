@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\IHDCapacityModel;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
