@@ -38,11 +38,75 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::post("/register", [UserController::class, "register"]);
 Route::post("/login", [UserController::class, "login"]);
 
-Route::resource('colors', ColorController::class)->only([
-    'index', 'store', 'show', 'update', 'destroy'
+//Indexed for Builder component
+Route::resource('case_type', PC_CaseController::class)->only([
+    'index'
+]);
+Route::resource('colors', PC_CaseController::class)->only([
+    'index'
+]);
+Route::resource('cpu', PC_CaseController::class)->only([
+    'index'
+]);
+Route::resource('cpu_cooler', PC_CaseController::class)->only([
+    'index'
+]);
+Route::resource('gpu_memory', PC_CaseController::class)->only([
+    'index'
+]);
+Route::resource('gpu', PC_CaseController::class)->only([
+    'index'
+]);
+Route::resource('ihd_capacity', PC_CaseController::class)->only([
+    'index'
+]);
+Route::resource('ihd_form_factor', PC_CaseController::class)->only([
+    'index'
+]);
+Route::resource('ihd_interface', PC_CaseController::class)->only([
+    'index'
+]);
+Route::resource('ihd_type', PC_CaseController::class)->only([
+    'index'
+]);
+Route::resource('internal_hard_drive', PC_CaseController::class)->only([
+    'index'
+]);
+Route::resource('memory_modules', PC_CaseController::class)->only([
+    'index'
+]);
+Route::resource('memory', PC_CaseController::class)->only([
+    'index'
+]);
+Route::resource('mobo_form_factor', PC_CaseController::class)->only([
+    'index'
+]);
+Route::resource('mobo_max_memory', PC_CaseController::class)->only([
+    'index'
+]);
+Route::resource('mobo_memory_slots', PC_CaseController::class)->only([
+    'index'
+]);
+Route::resource('motherboard', PC_CaseController::class)->only([
+    'index'
+]);
+Route::resource('side_panel_types', PC_CaseController::class)->only([
+    'index'
 ]);
 Route::resource('pc_case', PC_CaseController::class)->only([
-    'index', 'store', 'show', 'update', 'destroy'
+    'index'
+]);
+Route::resource('psu_efficiency', PC_CaseController::class)->only([
+    'index'
+]);
+Route::resource('psu_modular', PC_CaseController::class)->only([
+    'index'
+]);
+Route::resource('psu_type', PC_CaseController::class)->only([
+    'index'
+]);
+Route::resource('psu', PC_CaseController::class)->only([
+    'index'
 ]);
 
 //Route::post("/register", [UserController::class, "register"]);
