@@ -60,73 +60,73 @@ Route::post("/login", [UserController::class, "login"]);
 
 //Indexed for Builder component
 Route::resource('case_type', CaseTypeController::class)->only([
-    'index'
+    'index', 'show'
 ]);
 Route::resource('colors', ColorController::class)->only([
-    'index'
+    'index', 'show'
 ]);
 Route::resource('cpu', CPUController::class)->only([
-    'index'
+    'index', 'show'
 ]);
 Route::resource('cpu_cooler', CPUCoolerController::class)->only([
-    'index'
+    'index', 'show'
 ]);
 Route::resource('gpu_memory', GPUMemoryController::class)->only([
-    'index'
+    'index', 'show'
 ]);
 Route::resource('gpu', GPUController::class)->only([
-    'index'
+    'index', 'show'
 ]);
 Route::resource('ihd_capacity', IHDCapacityController::class)->only([
-    'index'
+    'index', 'show'
 ]);
 Route::resource('ihd_form_factor', IHDFormFactorController::class)->only([
-    'index'
+    'index', 'show'
 ]);
 Route::resource('ihd_interface', IHDInterfaceController::class)->only([
-    'index'
+    'index', 'show'
 ]);
 Route::resource('ihd_type', IHDTypeController::class)->only([
-    'index'
+    'index', 'show'
 ]);
 Route::resource('internal_hard_drive', IHDController::class)->only([
-    'index'
+    'index', 'show'
 ]);
 Route::resource('memory_modules', MemoryModulesController::class)->only([
-    'index'
+    'index', 'show'
 ]);
 Route::resource('memory', MemoryController::class)->only([
-    'index'
+    'index', 'show'
 ]);
 Route::resource('mobo_form_factor', MOBOFFController::class)->only([
-    'index'
+    'index', 'show'
 ]);
 Route::resource('mobo_max_memory', MOBOMMController::class)->only([
-    'index'
+    'index', 'show'
 ]);
 Route::resource('mobo_memory_slots', MOBOMSController::class)->only([
-    'index'
+    'index', 'show'
 ]);
 Route::resource('motherboard', MOBOController::class)->only([
-    'index'
+    'index', 'show'
 ]);
 Route::resource('side_panel_types', SidePanelTypesController::class)->only([
-    'index'
+    'index', 'show'
 ]);
 Route::resource('pc_case', PC_CaseController::class)->only([
-    'index'
+    'index', 'show'
 ]);
 Route::resource('psu_efficiency', PSUEfficiencyController::class)->only([
-    'index'
+    'index', 'show'
 ]);
 Route::resource('psu_modular', PSUModularController::class)->only([
-    'index'
+    'index', 'show'
 ]);
 Route::resource('psu_type', PSUTypeController::class)->only([
-    'index'
+    'index', 'show'
 ]);
 Route::resource('psu', PSUController::class)->only([
-    'index'
+    'index', 'show'
 ]);
 
 //Route::post("/register", [UserController::class, "register"]);
