@@ -30,9 +30,12 @@ export class LoginComponent implements OnInit {
         console.log('Response:', response);
         // Check if the response contains the expected data object
         if (response.success && response.data && response.data.token) {
-          const token = response.data.token;
+          // Extract the token from the response
+          let token = response.data.token;
+          // Remove additional characters (e.g., "{number}|") from the token
+          token = token.split('|')[1]; // Split by '|' and get the second part
           console.log('Token:', token);
-          // Store the token in localStorage or session storage
+          // Store the token in localStorage
           localStorage.setItem('token', token);
           // Redirect to home page upon successful login
           this.router.navigate(['/home']);
@@ -47,4 +50,5 @@ export class LoginComponent implements OnInit {
       }
     );
   }
+  
 }
