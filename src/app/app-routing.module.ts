@@ -6,6 +6,7 @@ import { HowToComponent } from './how-to/how-to.component';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './sign-up/sign-up.component';
 import { FooterComponent } from './footer/footer.component';
+import { UserConfigsComponent } from './userconfigs/userconfigs.component';
 
 const routes: Routes = [
   {
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'sign-up', component: SignupComponent },
   { path: 'footer', component: FooterComponent },
+  { path: 'userconfigs', component: UserConfigsComponent },
   { path: '**', redirectTo: '/home', pathMatch: 'full' }, // Redirect unmatched paths to home
 ]; 
 

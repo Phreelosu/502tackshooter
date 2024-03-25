@@ -51,4 +51,8 @@ export class SignupService {
   saveConfiguration(configData: any) {
     return this.http.post<any>('http://localhost:8000/api/newconfig', configData);
   }
+
+  getSavedConfigurations() {
+    return this.http.get<any[]>('http://localhost:8000/api/configs');
+  }
 }

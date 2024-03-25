@@ -1,0 +1,32 @@
+<h2>User Configurations</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Case</th>
+      <th>CPU</th>
+      <th>CPU Cooler</th>
+      <th>GPU</th>
+      <th>Internal Hard Drive</th>
+      <th>Memory</th>
+      <th>Motherboard</th>
+      <th>Power Supply</th>
+      <th>Created At</th>
+      <th>Updated At</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let config of configs">
+      <td>{{ config.Case_ID }}</td>
+      <td>{{ config.CPU_ID }}</td>
+      <td>{{ config.CPU_Cooler_ID }}</td>
+      <td>{{ config.GPU_ID }}</td>
+      <td>{{ config.IHD_ID }}</td>
+      <td>{{ config.Memory_ID }}</td>
+      <td>{{ config.Motherboard_ID }}</td>
+      <td>{{ config.PSU_ID }}</td>
+      <td>{{ config.created_at }}</td>
+      <td>{{ config.updated_at }}</td>
+    </tr>
+  </tbody>
+</table>

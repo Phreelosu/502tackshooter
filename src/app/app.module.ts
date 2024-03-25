@@ -10,10 +10,12 @@ import { BuilderComponent } from './builder/builder.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { SignupComponent } from './sign-up/sign-up.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms'; // Import ReactiveFormsModule
 import { AuthService } from './auth.service';
 import { FormsModule } from '@angular/forms';
+import { UserConfigsComponent } from './userconfigs/userconfigs.component';
+import { SignupComponent } from './sign-up/sign-up.component'; // Make sure to import your component
+
 
 @NgModule({
   declarations: [
@@ -24,21 +26,20 @@ import { FormsModule } from '@angular/forms';
     BuilderComponent,
     HeaderComponent,
     FooterComponent,
+    UserConfigsComponent,
     SignupComponent
   ],
-
   imports: [
     BrowserModule,
     AppRoutingModule,
     NgbModule,
-    ReactiveFormsModule,
+    ReactiveFormsModule, // Add ReactiveFormsModule here
     HttpClientModule,
     FormsModule
   ],
   providers: [
-    SignupComponent,
     AuthService,
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }
