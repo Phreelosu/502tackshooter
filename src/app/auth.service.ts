@@ -13,6 +13,11 @@ export class AuthService {
     return this.http.post<any>('http://localhost:8000/api/login', { username, password });
   }
 
+  logout(): void {
+    // Remove the token from local storage
+    localStorage.removeItem('token');
+  }
+
   getToken(): string | null {
     return localStorage.getItem('token');
   }
