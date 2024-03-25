@@ -17,8 +17,13 @@ export class UserConfigsComponent implements OnInit {
   }
 
   loadConfigs(): void {
-    this.configService.getUserConfigs().subscribe(configs => {
-      this.configs = configs;
-    });
+    this.configService.getUserConfigs().subscribe(
+      configs => {
+        this.configs = configs;
+      },
+      error => {
+        console.error('Error loading user configs:', error);
+      }
+    );
   }
 }
