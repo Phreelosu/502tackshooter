@@ -10,18 +10,19 @@ import { UserConfigsComponent } from './userconfigs/userconfigs.component';
 
 const routes: Routes = [
   {
-    path: '', 
-    loadChildren: () => import('./public/public.module').then((m) => m.PublicModule) 
+    path: '',
+    loadChildren: () => import('./public/public.module').then((m) => m.PublicModule)
   },
   { path: 'home', component: HomeComponent },
-  { path: 'builder', component: BuilderComponent },
+  { path: 'builder/:id', component: BuilderComponent }, // Allow config ID parameter
+  { path: 'builder', component: BuilderComponent }, // Route for creating new config (no ID parameter)
   { path: 'how-to', component: HowToComponent },
   { path: 'login', component: LoginComponent },
   { path: 'sign-up', component: SignupComponent },
   { path: 'footer', component: FooterComponent },
   { path: 'userconfigs', component: UserConfigsComponent },
   { path: '**', redirectTo: '/home', pathMatch: 'full' }, // Redirect unmatched paths to home
-]; 
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

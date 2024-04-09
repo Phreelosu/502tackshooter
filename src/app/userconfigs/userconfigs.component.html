@@ -11,22 +11,26 @@
       <th>Memory</th>
       <th>Motherboard</th>
       <th>Power Supply</th>
-      <th>Created At</th>
-      <th>Updated At</th>
+      <th>Modify</th>
+      <th>Delete</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let config of configs">
-      <td>{{ config.Case_ID }}</td>
-      <td>{{ config.CPU_ID }}</td>
-      <td>{{ config.CPU_Cooler_ID }}</td>
-      <td>{{ config.GPU_ID }}</td>
-      <td>{{ config.IHD_ID }}</td>
-      <td>{{ config.Memory_ID }}</td>
-      <td>{{ config.Motherboard_ID }}</td>
-      <td>{{ config.PSU_ID }}</td>
-      <td>{{ config.created_at }}</td>
-      <td>{{ config.updated_at }}</td>
+      <td>{{ config.case }}</td>
+      <td>{{ config.cpu }}</td>
+      <td>{{ config.cpu_cooler }}</td>
+      <td>{{ config.gpu }}</td>
+      <td>{{ config.internal_hard_drive }}</td>
+      <td>{{ config.memory }}</td>
+      <td>{{ config.motherboard }}</td>
+      <td>{{ config.psu }}</td>
+      <td>
+        <button (click)="modifyConfig(config.id)" class="btn btn-primary">Modify</button>
+      </td>
+      <td>
+        <button (click)="deleteConfig(config.id)" class="btn btn-danger">Delete</button>
+      </td>
     </tr>
   </tbody>
 </table>

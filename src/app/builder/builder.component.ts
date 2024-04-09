@@ -1,8 +1,8 @@
 // builder.component.ts
 
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { SignupService } from '../signup.service';
 
@@ -28,10 +28,18 @@ export class BuilderComponent implements OnInit {
   selectedGraphicsCard: number | null = null;
   selectedhardDrive: number | null = null;
   selectedCase: number | null = null;
+  mode!: 'create' | 'modify';
+  configId: number | null = null; // Add a property to store the ID of the config being modified
 
-  constructor(private http: HttpClient, private authService: AuthService, private signupService: SignupService, private router: Router) { }
-
+  constructor(
+    private http: HttpClient, 
+    private authService: AuthService, 
+    private router: Router,
+    private route: ActivatedRoute // Include ActivatedRoute in the constructor
+  ) { }
+  
   ngOnInit(): void {
+    this.mode = 'create'; // Default mode is 'create'
     this.fetchProcessors();
     this.fetchMotherboards();
     this.fetchMemories();
@@ -40,7 +48,16 @@ export class BuilderComponent implements OnInit {
     this.fetchGraphicsCards();
     this.fetchHardDrives();
     this.fetchCases();
+  
+    this.route.params.subscribe(params => {
+      if (params['id']) {
+        this.mode = 'modify';
+        this.configId = params['id']; // Store the ID of the config being modified
+        this.fetchConfig(params['id']); // Fetch config data when in "modify" mode
+      }
+    });
   }
+  
 
   isLoggedIn(): boolean {
     return localStorage.getItem('token') !== null;
@@ -53,6 +70,7 @@ export class BuilderComponent implements OnInit {
   fetchProcessors(): void {
     this.http.get<any[]>('http://localhost:8000/api/cpu').subscribe(
       data => {
+        console.log('Fetched processors:', data); // Log the fetched data
         this.processors = data; // Assuming data is an array of CPU options
       },
       error => {
@@ -60,6 +78,7 @@ export class BuilderComponent implements OnInit {
       }
     );
   }
+  
   fetchMotherboards(): void {
     this.http.get<any[]>('http://localhost:8000/api/motherboard').subscribe(
       data => {
@@ -132,23 +151,39 @@ export class BuilderComponent implements OnInit {
   }
 
   saveConfiguration(): void {
-    // Check if the user is logged in
     const token = localStorage.getItem('token');
-    if (token) {
-      const headers = { 'Authorization': `Bearer ${token}` };
-      // Make sure to replace the placeholders with the actual data from your dropdowns
-      const configData = {
-        cpu_id: this.selectedProcessor,
-        motherboard_id: this.selectedMotherboard,
-        memory_id: this.selectedMemory,
-        cpu_cooler_id: this.selectedProcessorCooler,
-        psu_id: this.selectedPowerSupply,
-        gpu_id: this.selectedGraphicsCard,
-        ihd_id: this.selectedhardDrive,
-        case_id: this.selectedCase
-        // Add other selected parts as needed
-      };
+    if (!token) {
+      console.error('User not authenticated. Redirecting to login page.');
+      // Redirect to login page or handle as per your application logic
+      return;
+    }
   
+    const headers = { 'Authorization': `Bearer ${token}` };
+    const configData = {
+      cpu_id: this.selectedProcessor,
+      motherboard_id: this.selectedMotherboard,
+      memory_id: this.selectedMemory,
+      cpu_cooler_id: this.selectedProcessorCooler,
+      psu_id: this.selectedPowerSupply,
+      gpu_id: this.selectedGraphicsCard,
+      ihd_id: this.selectedhardDrive,
+      case_id: this.selectedCase
+    };
+  
+    if (this.mode === 'modify' && this.configId) {
+      // If in "modify" mode, include config_id and update the existing config
+      (configData as any)['config_id'] = this.configId;
+      this.http.put('http://localhost:8000/api/modifyconfig', configData, { headers }).subscribe(
+        response => {
+          console.log('Configuration updated:', response);
+          // Redirect or perform any other action upon successful update
+        },
+        error => {
+          console.error('Error updating configuration:', error);
+        }
+      );
+    } else {
+      // If in "create" mode, create a new config
       this.http.post('http://localhost:8000/api/newconfig', configData, { headers }).subscribe(
         response => {
           console.log('Configuration saved:', response);
@@ -158,10 +193,51 @@ export class BuilderComponent implements OnInit {
           console.error('Error saving configuration:', error);
         }
       );
+    }
+  }  
+
+  fetchConfig(id: number): void {
+    const token = localStorage.getItem('token');
+    if (token) {
+      const headers = { 'Authorization': `Bearer ${token}` };
+      this.http.get<any>(`http://localhost:8000/api/configs/${id}`, { headers }).subscribe(
+        data => {
+          console.log('Received configuration data:', data); // Log the received data
+      
+      // Find the corresponding ID for each component based on its name
+      this.selectedProcessor = this.findComponentId(this.processors, data.cpu);
+      this.selectedMotherboard = this.findComponentId(this.motherboards, data.motherboard);
+      this.selectedMemory = this.findComponentId(this.memories, data.memory);
+      this.selectedProcessorCooler = this.findComponentId(this.processorCoolers, data.cpu_cooler);
+      this.selectedPowerSupply = this.findComponentId(this.powerSupplies, data.psu);
+      this.selectedGraphicsCard = this.findComponentId(this.graphicsCards, data.gpu);
+      this.selectedhardDrive = this.findComponentId(this.hardDrives, data.internal_hard_drive);
+      this.selectedCase = this.findComponentId(this.cases, data.case);
+    },
+    error => {
+      console.error('Error fetching config data:', error);
+    }
+  );
     } else {
-      console.error('User not authenticated. Redirecting to login page.');
-      // Redirect to login page
-      this.router.navigate(['/login']);
+      console.error('User not authenticated. Fetching config data requires authentication.');
+      // Handle case where user is not authenticated
     }
   }
+  findComponentId(components: any[], name: string): number | null {
+    const lowerCaseName = name.toLowerCase();
+    const component = components.find(comp => {
+      // Check for matches across different properties in a case-insensitive manner
+      return Object.values(comp).some(value => {
+        if (typeof value === 'string') {
+          return value.toLowerCase() === lowerCaseName;
+        }
+        return false;
+      });
+    });
+    return component ? component.id : null;
+  }
+  
+  
+
+
 }
