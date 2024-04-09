@@ -1,4 +1,3 @@
-// config.model.ts
 export interface Config {
   id: number;
   case: number;
