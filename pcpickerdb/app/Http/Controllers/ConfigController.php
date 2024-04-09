@@ -93,6 +93,28 @@ public function deleteConfig(Request $request)
     return response()->json(['message' => 'Config deleted successfully']);
 }
 
+public function getConfig($id)
+{
+    $config = ConfigModel::with(['cpu', 'gpu', 'psu', 'internal_hard_drive', 'memory', 'motherboard', 'pc_case', 'cpu_cooler'])
+        ->where('user_id', auth()->id())
+        ->findOrFail($id);
+
+    // Format the response data as needed
+    $formattedConfig = [
+        'id' => $config->id,
+        'cpu' => $config->cpu->CPU_name,
+        'cpu_cooler' => $config->cpu_cooler->Cooler_name,
+        'internal_hard_drive' => $config->internal_hard_drive->Hard_drive_name,
+        'memory' => $config->memory->Memory_name,
+        'motherboard' => $config->motherboard->Motherboard_name,
+        'case' => $config->pc_case->Case_name,
+        'gpu' => $config->gpu->GPU_name,
+        'psu' => $config->psu->PSU_name,
+    ];
+
+    return response()->json($formattedConfig);
+}
+
 
 public function getConfigs()
 {

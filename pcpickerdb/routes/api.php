@@ -54,6 +54,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get("/configs", [ConfigController::class,"getConfigs"]);
 });
 
+Route::middleware('auth:sanctum')->get('/configs/{id}', [ConfigController::class, 'getConfig']);
+
 // Unauthenticated routes
 Route::post("/register", [UserController::class, "register"]);
 Route::post("/login", [UserController::class, "login"]);
