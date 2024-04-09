@@ -94,9 +94,26 @@ public function deleteConfig(Request $request)
 }
 
 
-    public function getConfigs()
-    {
-        $configs = ConfigModel::where('user_id', auth()->id())->get();
-        return response()->json($configs);
-    }
+public function getConfigs()
+{
+    $configs = ConfigModel::with(['cpu', 'gpu', 'psu', 'internal_hard_drive', 'memory', 'motherboard', 'pc_case', 'cpu_cooler'])
+        ->where('user_id', auth()->id())
+        ->get();
+
+    $formattedConfigs = $configs->map(function ($config) {
+        return [
+            'id' => $config->id,
+            'cpu' => $config->cpu->CPU_name,
+            'cpu_cooler' => $config->cpu_cooler->Cooler_name,
+            'internal_hard_drive' => $config->internal_hard_drive->Hard_drive_name,
+            'memory' => $config->memory->Memory_name,
+            'motherboard' => $config->motherboard->Motherboard_name,
+            'case' => $config->pc_case->Case_name,
+            'gpu' => $config->gpu->GPU_name,
+            'psu' => $config->psu->PSU_name,
+        ];
+    });
+
+    return response()->json($formattedConfigs);
+}
 }
