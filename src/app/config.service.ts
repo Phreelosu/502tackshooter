@@ -7,8 +7,11 @@ import { Config } from './config.model';
   providedIn: 'root'
 })
 export class ConfigService {
-  getPartName(id: any): any {
-    throw new Error('Method not implemented.');
+  getPartName(partType: string, id: number): Observable<string> {
+    // Construct the URL based on the partType and id
+    const url = `http://localhost:8000/api/${partType}/${id}`;
+    // Make the HTTP GET request to fetch the part name
+    return this.http.get<string>(url);
   }
 
   constructor(private http: HttpClient) { }
@@ -32,29 +35,4 @@ export class ConfigService {
       });
     }
   }
-  getCaseName(id: number): Observable<string[]> {
-    return this.http.get<string[]>(`http://localhost:8000/api/pc_case/${id}`);
-  }
-  getCPUName(id: number): Observable<string[]> {
-    return this.http.get<string[]>(`http://localhost:8000/api/cpu/${id}`);
-  }
-  getCPUCoolerName(id: number): Observable<string[]> {
-    return this.http.get<string[]>(`http://localhost:8000/api/cpu_cooler/${id}`);
-  }
-  getGPUName(id: number): Observable<string[]> {
-    return this.http.get<string[]>(`http://localhost:8000/api/gpu/${id}`);
-  }
-  getIHDName(id: number): Observable<string[]> {
-    return this.http.get<string[]>(`http://localhost:8000/api/internal_hard_drive/${id}`);
-  }
-  getMemoryName(id: number): Observable<string[]> {
-    return this.http.get<string[]>(`http://localhost:8000/api/memory/${id}`);
-  }
-  getMotherboardName(id: number): Observable<string[]> {
-    return this.http.get<string[]>(`http://localhost:8000/api/motherboard/${id}`);
-  }
-  getPowerSupplyName(id: number): Observable<string[]> {
-    return this.http.get<string[]>(`http://localhost:8000/api/psu/${id}`);
-  }
-
 }

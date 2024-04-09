@@ -1,7 +1,7 @@
 .mx-auto{
     width: 800px;
 }
-img{
+.pics{
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -11,6 +11,7 @@ img{
     width: 700px;
     border-radius: 2px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    height: "400px"
 }
 
 h1{
@@ -25,3 +26,17 @@ p{
     text-align: left;
     padding-top: 20px;
 }
+
+.to-top {
+    bottom: 0;
+    cursor: pointer;
+    margin: 0 8px 12px 0;
+    position: fixed;
+    right: 0;
+
+  }
+  
+.show-scrolltop {
+    opacity: 1;
+    transition: all 0.2s ease-in-out;
+  }

@@ -18,7 +18,7 @@ const routes: Routes = [
   { path: 'how-to', component: HowToComponent },
   { path: 'login', component: LoginComponent },
   { path: 'sign-up', component: SignupComponent },
-  { path: 'footer', component: FooterComponent },
+  { path: 'footer', component: FooterComponent }, 
   { path: 'userconfigs', component: UserConfigsComponent },
   { path: '**', redirectTo: '/home', pathMatch: 'full' }, // Redirect unmatched paths to home
 ]; 

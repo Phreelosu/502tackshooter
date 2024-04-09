@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Inject } from '@angular/core';
 
 @Component({
   selector: 'app-how-to',
   templateUrl: './how-to.component.html',
   styleUrls: ['./how-to.component.css']
+  
 })
 export class HowToComponent {
   link = "./assets/how-to-build-pc-rig.jpg"
@@ -45,8 +48,18 @@ export class HowToComponent {
   link37 = "./assets/power-sw.jpg"
   link38 = "./assets/gpu-install2.jpg"
   link39 = "./assets/pc-turn-on.jpg"
-  link40 = "./assets/cable-management"
-  link41 = "./assets/cable-management2"
-  link42 = "./assets/os-install"
-  link43 = "./assets/bios"  
+  link40 = "./assets/cable-managament.jpg"
+  link41 = "./assets/cable-management2.jpg"
+  link42 = "./assets/os-install.jpg"
+  link43 = "./assets/bios.jpg"
+  link44 = "./assets/back-to-top.png"
+  constructor(@Inject(DOCUMENT) private document: Document) {}
+  
+  scrollToTop(): void {
+    return this.document.body.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+      inline: 'start'
+    });
+  }  
 }
