@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router'; // Import Router
+import { Router } from '@angular/router'; 
 import { SignupService } from '../signup.service';
 
 @Component({
@@ -14,7 +14,7 @@ export class LoginComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder, 
               private signupService: SignupService,
-              private router: Router) { // Inject Router service
+              private router: Router) { 
     this.loginForm = this.formBuilder.group({
       email: ["", [Validators.required, Validators.email]],
       password: ["", [Validators.required]]
@@ -28,27 +28,19 @@ export class LoginComponent implements OnInit {
     this.signupService.logIn(formData).subscribe(
       response => {
         console.log('Response:', response);
-        // Check if the response contains the expected data object
         if (response.success && response.data && response.data.token) {
-          // Extract the token from the response
           let token = response.data.token;
-          // Remove additional characters (e.g., "{number}|") from the token
-          token = token.split('|')[1]; // Split by '|' and get the second part
+          token = token.split('|')[1];
           console.log('Token:', token);
-          // Store the token in localStorage
           localStorage.setItem('token', token);
-          // Redirect to home page upon successful login
           this.router.navigate(['/home']);
         } else {
           console.error('Token not found in the response:', response);
-          // Handle error, e.g., show an error message to the user
         }
       },
       error => {
         console.error('Error:', error);
-        // Handle error, e.g., show an error message to the user
       }
     );
   }
-  
 }

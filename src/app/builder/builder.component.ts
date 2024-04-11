@@ -1,5 +1,3 @@
-// builder.component.ts
-
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -29,17 +27,17 @@ export class BuilderComponent implements OnInit {
   selectedhardDrive: number | null = null;
   selectedCase: number | null = null;
   mode!: 'create' | 'modify';
-  configId: number | null = null; // Add a property to store the ID of the config being modified
+  configId: number | null = null; 
 
   constructor(
     private http: HttpClient, 
     private authService: AuthService, 
     private router: Router,
-    private route: ActivatedRoute // Include ActivatedRoute in the constructor
+    private route: ActivatedRoute 
   ) { }
   
   ngOnInit(): void {
-    this.mode = 'create'; // Default mode is 'create'
+    this.mode = 'create';
     this.fetchProcessors();
     this.fetchMotherboards();
     this.fetchMemories();
@@ -52,8 +50,8 @@ export class BuilderComponent implements OnInit {
     this.route.params.subscribe(params => {
       if (params['id']) {
         this.mode = 'modify';
-        this.configId = params['id']; // Store the ID of the config being modified
-        this.fetchConfig(params['id']); // Fetch config data when in "modify" mode
+        this.configId = params['id'];
+        this.fetchConfig(params['id']);
       }
     });
   }
@@ -70,8 +68,8 @@ export class BuilderComponent implements OnInit {
   fetchProcessors(): void {
     this.http.get<any[]>('http://localhost:8000/api/cpu').subscribe(
       data => {
-        console.log('Fetched processors:', data); // Log the fetched data
-        this.processors = data; // Assuming data is an array of CPU options
+        console.log('Fetched processors:', data);
+        this.processors = data;
       },
       error => {
         console.error('Error fetching CPU data:', error);
@@ -82,7 +80,7 @@ export class BuilderComponent implements OnInit {
   fetchMotherboards(): void {
     this.http.get<any[]>('http://localhost:8000/api/motherboard').subscribe(
       data => {
-        this.motherboards = data; // Assuming data is an array of Motherboard options
+        this.motherboards = data;
       },
       error => {
         console.error('Error fetching MOBO data:', error);
@@ -92,7 +90,7 @@ export class BuilderComponent implements OnInit {
   fetchMemories(): void {
     this.http.get<any[]>('http://localhost:8000/api/memory').subscribe(
       data => {
-        this.memories = data; // Assuming data is an array of Memory options
+        this.memories = data;
       },
       error => {
         console.error('Error fetching Memory data:', error);
@@ -102,7 +100,7 @@ export class BuilderComponent implements OnInit {
   fetchProcessorCoolers(): void {
     this.http.get<any[]>('http://localhost:8000/api/cpu_cooler').subscribe(
       data => {
-        this.processorCoolers = data; // Assuming data is an array of CPU_Cooler options
+        this.processorCoolers = data;
       },
       error => {
         console.error('Error fetching CPU_Cooler data:', error);
@@ -112,7 +110,7 @@ export class BuilderComponent implements OnInit {
   fetchPowerSupplies(): void {
     this.http.get<any[]>('http://localhost:8000/api/psu').subscribe(
       data => {
-        this.powerSupplies = data; // Assuming data is an array of PSU options
+        this.powerSupplies = data;
       },
       error => {
         console.error('Error fetching PSU data:', error);
@@ -122,7 +120,7 @@ export class BuilderComponent implements OnInit {
   fetchGraphicsCards(): void {
     this.http.get<any[]>('http://localhost:8000/api/gpu').subscribe(
       data => {
-        this.graphicsCards = data; // Assuming data is an array of GPU options
+        this.graphicsCards = data;
       },
       error => {
         console.error('Error fetching GPU data:', error);
@@ -132,7 +130,7 @@ export class BuilderComponent implements OnInit {
   fetchHardDrives(): void {
     this.http.get<any[]>('http://localhost:8000/api/internal_hard_drive').subscribe(
       data => {
-        this.hardDrives = data; // Assuming data is an array of IHD options
+        this.hardDrives = data;
       },
       error => {
         console.error('Error fetching IHD data:', error);
@@ -142,7 +140,6 @@ export class BuilderComponent implements OnInit {
   fetchCases(): void {
     this.http.get<any[]>('http://localhost:8000/api/pc_case').subscribe(
       data => {
-        this.cases = data; // Assuming data is an array of Case options
       },
       error => {
         console.error('Error fetching Case data:', error);
@@ -154,7 +151,6 @@ export class BuilderComponent implements OnInit {
     const token = localStorage.getItem('token');
     if (!token) {
       console.error('User not authenticated. Redirecting to login page.');
-      // Redirect to login page or handle as per your application logic
       return;
     }
   
@@ -171,23 +167,19 @@ export class BuilderComponent implements OnInit {
     };
   
     if (this.mode === 'modify' && this.configId) {
-      // If in "modify" mode, include config_id and update the existing config
       (configData as any)['config_id'] = this.configId;
       this.http.put('http://localhost:8000/api/modifyconfig', configData, { headers }).subscribe(
         response => {
           console.log('Configuration updated:', response);
-          // Redirect or perform any other action upon successful update
         },
         error => {
           console.error('Error updating configuration:', error);
         }
       );
     } else {
-      // If in "create" mode, create a new config
       this.http.post('http://localhost:8000/api/newconfig', configData, { headers }).subscribe(
         response => {
           console.log('Configuration saved:', response);
-          // Redirect or perform any other action upon successful save
         },
         error => {
           console.error('Error saving configuration:', error);
@@ -202,9 +194,7 @@ export class BuilderComponent implements OnInit {
       const headers = { 'Authorization': `Bearer ${token}` };
       this.http.get<any>(`http://localhost:8000/api/configs/${id}`, { headers }).subscribe(
         data => {
-          console.log('Received configuration data:', data); // Log the received data
-      
-      // Find the corresponding ID for each component based on its name
+          console.log('Received configuration data:', data);
       this.selectedProcessor = this.findComponentId(this.processors, data.cpu);
       this.selectedMotherboard = this.findComponentId(this.motherboards, data.motherboard);
       this.selectedMemory = this.findComponentId(this.memories, data.memory);
@@ -220,13 +210,11 @@ export class BuilderComponent implements OnInit {
   );
     } else {
       console.error('User not authenticated. Fetching config data requires authentication.');
-      // Handle case where user is not authenticated
     }
   }
   findComponentId(components: any[], name: string): number | null {
     const lowerCaseName = name.toLowerCase();
     const component = components.find(comp => {
-      // Check for matches across different properties in a case-insensitive manner
       return Object.values(comp).some(value => {
         if (typeof value === 'string') {
           return value.toLowerCase() === lowerCaseName;
@@ -236,8 +224,4 @@ export class BuilderComponent implements OnInit {
     });
     return component ? component.id : null;
   }
-  
-  
-
-
 }

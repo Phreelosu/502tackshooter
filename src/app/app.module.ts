@@ -14,7 +14,7 @@ import { ReactiveFormsModule } from '@angular/forms'; // Import ReactiveFormsMod
 import { AuthService } from './auth.service';
 import { FormsModule } from '@angular/forms';
 import { UserConfigsComponent } from './userconfigs/userconfigs.component';
-import { SignupComponent } from './sign-up/sign-up.component'; // Make sure to import your component
+import { SignupComponent } from './sign-up/sign-up.component';
 
 
 @NgModule({
