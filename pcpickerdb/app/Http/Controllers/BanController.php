@@ -10,10 +10,11 @@ use Carbon\Carbon;
 class BanController extends Controller
 {
     public function getLoginAttempts($email) {
-
-        $user=User::where("email", $email)->first();
-        $attempts = $user->login_attempt;
-        return $attempts;
+        $user = User::where("email", $email)->first();
+        if ($user) {
+            return $user->login_attempt;
+        }
+        return 0; // Return default value if user not found
     }
 
     public function setLoginAttempts($email) {
@@ -21,9 +22,11 @@ class BanController extends Controller
     }
 
     public function getBannedTime($email) {
-        $user=User::where("email", $email)->first();
-        $bannedTime=$user->banned_time;
-        return $bannedTime;
+        $user = User::where("email", $email)->first();
+        if ($user) {
+            return $user->banned_time;
+        }
+        return null; // Return default value if user not found
     }
 
     public function setBannedTime($email){
