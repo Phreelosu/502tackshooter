@@ -140,6 +140,7 @@ export class BuilderComponent implements OnInit {
   fetchCases(): void {
     this.http.get<any[]>('http://localhost:8000/api/pc_case').subscribe(
       data => {
+        this.cases = data;
       },
       error => {
         console.error('Error fetching Case data:', error);
