@@ -8,15 +8,15 @@
 
             <li class="list-group-item">
               <label for="processor">Processor</label>
-              <select id="processor" class="form-select" [(ngModel)]="selectedProcessor">
+              <select id="processor" class="form-select" [(ngModel)]="selectedProcessor" [disabled]="!isLoggedIn()">
                 <option [ngValue]="null" disabled>Choose a Processor</option>
                 <option *ngFor="let processor of processors" [value]="processor.id">{{ processor.CPU_name }}</option>
-              </select>
+              </select>              
             </li>
 
             <li class="list-group-item">
               <label for="cooler">Processor Cooler</label>
-              <select id="cooler" class="form-select" [(ngModel)]="selectedProcessorCooler">
+              <select id="cooler" class="form-select" [(ngModel)]="selectedProcessorCooler" [disabled]="!isLoggedIn()">
                 <option [ngValue]="null" disabled selected>Choose a Cooler</option>
                 <option *ngFor="let cpu_cooler of processorCoolers" [value]="cpu_cooler.id">{{ cpu_cooler.Cooler_name }}</option>
             </select> 
@@ -24,7 +24,7 @@
 
             <li class="list-group-item">
               <label for="memory">Memory</label>
-              <select id="memory" class="form-select" [(ngModel)]="selectedMemory">
+              <select id="memory" class="form-select" [(ngModel)]="selectedMemory" [disabled]="!isLoggedIn()">
                 <option [ngValue]="null" disabled selected>Choose a Memory</option>
                 <option *ngFor="let memory of memories" [value]="memory.id">{{ memory.Memory_name }}</option>
             </select> 
@@ -32,7 +32,7 @@
 
             <li class="list-group-item">
               <label for="motherboard">Motherboard</label>
-              <select id="motherboard" class="form-select" [(ngModel)]="selectedMotherboard">
+              <select id="motherboard" class="form-select" [(ngModel)]="selectedMotherboard" [disabled]="!isLoggedIn()">
                 <option [ngValue]="null" disabled selected>Choose a Motherboard</option>
                 <option *ngFor="let motherboard of motherboards" [value]="motherboard.id">{{ motherboard.Motherboard_name }}</option>
             </select>              
@@ -40,7 +40,7 @@
 
             <li class="list-group-item">
               <label for="gpu">Graphics Card</label>
-              <select id="gpu" class="form-select" [(ngModel)]="selectedGraphicsCard">
+              <select id="gpu" class="form-select" [(ngModel)]="selectedGraphicsCard" [disabled]="!isLoggedIn()">
                 <option [ngValue]="null" disabled selected>Choose a Graphics Card</option>
                 <option *ngFor="let gpu of graphicsCards" [value]="gpu.id">{{ gpu.GPU_name }} {{gpu.GPU_chipset}}</option>
             </select> 
@@ -48,7 +48,7 @@
 
             <li class="list-group-item">
               <label for="ihd">Hard Drive / Storage</label>
-              <select id="ihd" class="form-select" [(ngModel)]="selectedhardDrive">
+              <select id="ihd" class="form-select" [(ngModel)]="selectedhardDrive" [disabled]="!isLoggedIn()">
                 <option [ngValue]="null" disabled selected>Choose a Hard Drive</option>
                 <option *ngFor="let internal_hard_drive of hardDrives" [value]="internal_hard_drive.id">{{ internal_hard_drive.Hard_drive_name }}</option>
             </select>
@@ -56,7 +56,7 @@
 
             <li class="list-group-item">
               <label for="psu">Power Supply</label>
-              <select id="psu" class="form-select" [(ngModel)]="selectedPowerSupply">
+              <select id="psu" class="form-select" [(ngModel)]="selectedPowerSupply" [disabled]="!isLoggedIn()">
                 <option [ngValue]="null" disabled selected>Choose a PSU</option>
                 <option *ngFor="let psu of powerSupplies" [value]="psu.id">{{ psu.PSU_name }}</option>
             </select> 
@@ -64,7 +64,7 @@
 
             <li class="list-group-item">
               <label for="case">Case</label>
-              <select id="case" class="form-select" [(ngModel)]="selectedCase">
+              <select id="case" class="form-select" [(ngModel)]="selectedCase" [disabled]="!isLoggedIn()">
                 <option [ngValue]="null" disabled selected>Choose a Case</option>
                 <option *ngFor="let pc_case of cases" [value]="pc_case.id">{{ pc_case.Case_name }}</option>
             </select>
@@ -72,11 +72,19 @@
           </ul>
         </div>
         
-        <button class="btn btn-primary mt-3" (click)="saveConfiguration()">
+        <!-- Display success message if exists -->
+        <div *ngIf="successMessage" class="alert alert-success">
+            {{ successMessage }}
+        </div>
 
+        <!-- Display error message if exists -->
+        <div *ngIf="errorMessage" class="alert alert-danger">
+            {{ errorMessage }}
+        </div>
+
+        <button class="btn btn-primary mt-3" (click)="isLoggedIn() ? saveConfiguration() : redirectToLogin()">
           {{ isLoggedIn() ? 'Save Configuration' : 'Log in to save your configuration!' }}
-
-        </button>          
+        </button>                  
       </div>
     </div>
   </div>

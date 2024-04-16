@@ -4,6 +4,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { SignupService } from '../signup.service';
 
+interface ApiResponse {
+  success: boolean;
+  data: any; // Adjust the type of data as per your API response structure
+  message: string; // Add a message property
+}
+
 @Component({
   selector: 'app-builder',
   templateUrl: './builder.component.html',
@@ -28,6 +34,8 @@ export class BuilderComponent implements OnInit {
   selectedCase: number | null = null;
   mode!: 'create' | 'modify';
   configId: number | null = null; 
+  successMessage: string | null = null;
+  errorMessage: string | null = null;
 
   constructor(
     private http: HttpClient, 
@@ -167,27 +175,75 @@ export class BuilderComponent implements OnInit {
       case_id: this.selectedCase
     };
   
+    // Check if any dropdowns have their default values selected
+    const notSelectedParts: string[] = [];
+    if (!this.selectedProcessor) {
+      notSelectedParts.push('Processor');
+    }
+    if (!this.selectedMotherboard) {
+      notSelectedParts.push('Motherboard');
+    }
+    if (!this.selectedMemory) {
+      notSelectedParts.push('Memory');
+    }
+    if (!this.selectedProcessorCooler) {
+      notSelectedParts.push('Processor Cooler');
+    }
+    if (!this.selectedPowerSupply) {
+      notSelectedParts.push('Power Supply');
+    }
+    if (!this.selectedGraphicsCard) {
+      notSelectedParts.push('Graphics Card');
+    }
+    if (!this.selectedhardDrive) {
+      notSelectedParts.push('Hard Drive');
+    }
+    if (!this.selectedCase) {
+      notSelectedParts.push('Case');
+    }
+  
+    // If any parts are not selected, display an error message
+    if (notSelectedParts.length > 0) {
+      this.errorMessage = `Please select the following parts: ${notSelectedParts.join(', ')}`;
+      // Clear any previous success message
+      this.successMessage = null;
+      return;
+    }
+  
+    // If all parts are selected, proceed with saving the configuration
     if (this.mode === 'modify' && this.configId) {
       (configData as any)['config_id'] = this.configId;
-      this.http.put('http://localhost:8000/api/modifyconfig', configData, { headers }).subscribe(
+      this.http.put<ApiResponse>('http://localhost:8000/api/modifyconfig', configData, { headers }).subscribe(
         response => {
           console.log('Configuration updated:', response);
+          this.successMessage = response.message; // Set success message from response
+          // Clear any previous error message
+          this.errorMessage = null;
         },
         error => {
           console.error('Error updating configuration:', error);
+          this.errorMessage = error.message; // Set error message from error object
+          // Clear any previous success message
+          this.successMessage = null;
         }
       );
     } else {
-      this.http.post('http://localhost:8000/api/newconfig', configData, { headers }).subscribe(
+      this.http.post<ApiResponse>('http://localhost:8000/api/newconfig', configData, { headers }).subscribe(
         response => {
           console.log('Configuration saved:', response);
+          this.successMessage = response.message; // Set success message from response
+          // Clear any previous error message
+          this.errorMessage = null;
         },
         error => {
           console.error('Error saving configuration:', error);
+          this.errorMessage = error.message; // Set error message from error object
+          // Clear any previous success message
+          this.successMessage = null;
         }
       );
     }
-  }  
+  }
 
   fetchConfig(id: number): void {
     const token = localStorage.getItem('token');

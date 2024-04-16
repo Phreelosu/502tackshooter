@@ -25,6 +25,10 @@
       </div>
       <button class="w-100 btn btn-lg btn-primary" type="submit">Log In</button>
       <p class="mt-5 mb-3 text-muted">&copy; 2024</p>
+      <!-- Display API response message -->
+      <div *ngIf="message" class="alert" [ngClass]="{'alert-success': success, 'alert-danger': !success}">
+        {{ message }}
+      </div>
     </form>
   </main>
 </body>

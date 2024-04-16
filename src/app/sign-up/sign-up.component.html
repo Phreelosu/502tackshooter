@@ -46,42 +46,37 @@
   </head>
   <body class="text-center">
     <main class="form-signin mx-auto">
-        <form [formGroup]="signupForm" (ngSubmit)="signUp()">
-          <img class="mb-4" [src]="link" alt="Site Logo" width="200" height="200">
-            <h1 class="h3 mb-3 fw-normal">Please sign Up</h1>
-            
-            <div class="form-floating">
-              <input formControlName="name" type="text" class="form-control" placeholder="David">
-              <label for="name">Your Name</label>
-            </div>
-            
-            <div class="form-floating">
-              <input formControlName="email" type="email" class="form-control" placeholder="name@example.com">
-              <label for="email">Email address</label>
-            </div>
-            
-            <div class="form-floating">
-              <input formControlName="password" type="password" class="form-control" placeholder="Password">
-              <label for="password">Password</label>
-            </div>
-            
-            <div class="form-floating">
-              <input formControlName="password_confirmation" type="password" class="form-control" placeholder="Confirm Password">
-              <label for="password_confirmation">Confirm Password</label>
-            </div>
-            
-            <div class="checkbox mb-3">
-              <label>
-                <input type="checkbox" formControlName="rememberMe"> Remember me
-              </label>
-            </div>
-            
-            <button class="w-100 btn btn-lg btn-primary" type="submit">Sign Up</button>
-            <p class="mt-5 mb-3 text-muted">&copy; 2024</p>
-          </form>
-</main>
-
-
-    
+      <form [formGroup]="signupForm" (ngSubmit)="signUp()">
+        <img class="mb-4" [src]="link" alt="Site Logo" width="200" height="200">
+        <h1 class="h3 mb-3 fw-normal">Please sign Up</h1>
+        <div class="form-floating">
+          <input formControlName="name" type="text" class="form-control" placeholder="David">
+          <label for="name">Your Name</label>
+        </div>
+        <div class="form-floating">
+          <input formControlName="email" type="email" class="form-control" placeholder="name@example.com">
+          <label for="email">Email address</label>
+        </div>
+        <div class="form-floating">
+          <input formControlName="password" type="password" class="form-control" placeholder="Password">
+          <label for="password">Password</label>
+        </div>
+        <div class="form-floating">
+          <input formControlName="password_confirmation" type="password" class="form-control" placeholder="Confirm Password">
+          <label for="password_confirmation">Confirm Password</label>
+        </div>
+        <div class="checkbox mb-3">
+          <label>
+            <input type="checkbox" formControlName="rememberMe"> Remember me
+          </label>
+        </div>
+        <button class="w-100 btn btn-lg btn-primary" type="submit">Sign Up</button>
+        <p class="mt-5 mb-3 text-muted">&copy; 2024</p>
+        <!-- Display API response message -->
+        <div *ngIf="message" class="alert" [ngClass]="{'alert-success': success, 'alert-danger': !success}">
+          {{ message }}
+        </div>
+      </form>
+    </main>
   </body>
 </html>

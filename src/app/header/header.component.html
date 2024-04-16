@@ -1,21 +1,17 @@
-<!DOCTYPE html>
-  <html>
-    <head>
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-    </head>
-    <body>
-      <div class="header">
-          <a href="home" class="logo">PCBuilder</a>
-        <div class="header-left">
-          <a class="nav-link" routerLink="how-to">How to<span class="sr-only"></span></a>
-          <a class="nav-link" routerLink="builder">Build it!</a>
-        </div>
-      <div class="header-right">
-          <a class="nav-link" routerLink="login" *ngIf="!isLoggedIn()">Log In</a>
-          <a class="nav-link" routerLink="sign-up" *ngIf="!isLoggedIn()">Sign Up</a>
-          <a class="nav-link" routerLink="home" (click)="logout()" *ngIf="isLoggedIn()">Log Out</a>
-          <a class="nav-link" routerLink="userconfigs" *ngIf="isLoggedIn()">My Configs</a>
-      </div>
-    </div>
-  </body>
-</html>
+<div class="header">
+  <a href="home" class="logo">PCBuilder</a>
+  <div class="header-left">
+    <a class="nav-link" routerLink="how-to">How to<span class="sr-only"></span></a>
+    <a class="nav-link" routerLink="builder">Build it!</a>
+  </div>
+  <div class="header-right">
+    <a class="nav-link" routerLink="login" *ngIf="!isLoggedIn">Log In</a>
+    <a class="nav-link" routerLink="sign-up" *ngIf="!isLoggedIn">Sign Up</a>
+    <a class="nav-link" routerLink="home" (click)="logout()" *ngIf="isLoggedIn">Log Out</a>
+    <a class="nav-link" routerLink="userconfigs" *ngIf="isLoggedIn">My Configs</a>
+  </div>
+  <!-- Success message -->
+  <div *ngIf="showSuccessMessage" class="success-message">
+    {{ successMessage }}
+  </div>
+</div>

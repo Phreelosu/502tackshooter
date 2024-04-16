@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { SignupService } from '../signup.service'; // Import your SignupService
+import { Router } from '@angular/router';
+import { SignupService } from '../signup.service';
+import { AuthService } from '../auth.service'; // Import AuthService
 
 @Component({
   selector: 'app-signup',
@@ -9,15 +11,21 @@ import { SignupService } from '../signup.service'; // Import your SignupService
 })
 export class SignupComponent implements OnInit {
   signupForm: FormGroup;
-  link = "./assets/site_logo.png"
+  link = "./assets/site_logo.png";
+  message: string | null = null;
+  success: boolean | null = null;
 
-  constructor(private formBuilder: FormBuilder, private signupService: SignupService) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private signupService: SignupService,
+    private authService: AuthService, // Inject AuthService
+    private router: Router
+  ) {
     this.signupForm = this.formBuilder.group({
       name: ["", Validators.required],
       email: ["", [Validators.required, Validators.email]],
       password: ["", [Validators.required]],
       password_confirmation: ["", Validators.required]
-
     });
   }
 
@@ -28,11 +36,18 @@ export class SignupComponent implements OnInit {
     this.signupService.signUp(formData).subscribe(
       response => {
         console.log('Response:', response);
-        // Handle successful response, e.g., show a success message
+        if (response.success) {
+          this.authService.emitSignupSuccessMessage('Signup successful'); // Emit signup success message
+          this.router.navigate(['/login']);
+        } else {
+          this.message = response.message || 'Sign up failed';
+          this.success = false;
+        }
       },
       error => {
         console.error('Error:', error);
-        // Handle error, e.g., show an error message
+        this.message = 'Error occurred while signing up';
+        this.success = false;
       }
     );
   }
