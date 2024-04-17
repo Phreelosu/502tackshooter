@@ -15,6 +15,7 @@ use App\Http\Controllers\IHDCapacityController;
 use App\Http\Controllers\IHDController;
 use App\Http\Controllers\IHDFormFactorController;
 use App\Http\Controllers\IHDTypeController;
+use App\Http\Controllers\IHDInterfaceController;
 use App\Http\Controllers\MemoryController;
 use App\Http\Controllers\MemoryModulesController;
 use App\Http\Controllers\MOBOController;
