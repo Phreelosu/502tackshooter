@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { SignupService } from '../signup.service';
 import { Observable } from 'rxjs/internal/Observable';
-import { catchError, map, switchMap, tap, throwError } from 'rxjs';
+import { catchError, forkJoin, map, switchMap, tap, throwError } from 'rxjs';
 
 interface ApiResponse {
   success: boolean;
@@ -45,6 +45,50 @@ interface Memory {
   CAS_latency: number;
 }
 
+interface Motherboard {
+  id: number;
+  Motherboard_name: string;
+  Motherboard_price: number;
+  Motherboard_socket: string;
+  Motherboard_form_factor_ID: number;
+  Motherboard_form_factor: string;
+  Motherboard_max_memory_ID: number;
+  Motherboard_max_memory: string;
+  Motherboard_memory_slots_ID: number;
+  Motherboard_memory_slots: string;
+  Motherboard_color_ID: number;
+  Motherboard_color: string;
+}
+
+interface GraphicsCard {
+  id: number;
+  GPU_name: string;
+  GPU_price: number;
+  GPU_chipset: string;
+  GPU_memory_ID: number;
+  GPU_memory: string;
+  GPU_core_clock: string;
+  GPU_boost_clock: string;
+  GPU_color_ID: number;
+  GPU_color: string;
+  GPU_length: number;
+}
+
+interface IHD {
+  id: number;
+  Hard_drive_name: string;
+  Hard_drive_price: number;
+  Hard_drive_capacity_ID: number;
+  Hard_drive_capacity: string;
+  Hard_drive_type_ID: number;
+  Hard_drive_type: string;
+  Hard_drive_cache: number;
+  Hard_drive_form_factor_ID: number;
+  Hard_drive_form_factor: string;
+  Hard_drive_interface_ID: number;
+  Hard_drive_interface: string;
+}
+
 @Component({
   selector: 'app-builder',
   templateUrl: './builder.component.html',
@@ -54,13 +98,16 @@ export class BuilderComponent implements OnInit {
   processors: any[] = [];
   processorDetails: Processor | null = null;
   motherboards: any[] = [];
+  motherboardDetails: Motherboard | null = null;
   memories: any[] = [];
   memoryDetails: Memory | null = null;
   processorCoolers: any[] = [];
   coolerDetails: Cooler | null = null;
   powerSupplies: any[] = [];
   graphicsCards: any[] = [];
+  graphicsCardDetails: GraphicsCard | null = null;
   hardDrives: any[] = [];
+  hardDriveDetails: IHD | null = null;
   cases: any[] = [];
   selectedProcessor: number | null = null;
   selectedMotherboard: number | null = null;
@@ -160,6 +207,96 @@ export class BuilderComponent implements OnInit {
     );
   }
 
+  fetchMotherboardDetails(motherboardId: number): Observable<Motherboard> {
+    // Fetch motherboard details
+    const motherboard$ = this.http.get<Motherboard>(`http://localhost:8000/api/motherboard/${motherboardId}`);
+  
+    // Switch to fetching form factor based on the motherboard's form factor ID
+    const formFactor$ = motherboard$.pipe(
+      switchMap(motherboard => {
+        return this.http.get<any>(`http://localhost:8000/api/mobo_form_factor/${motherboard.Motherboard_form_factor_ID}`).pipe(
+          map(response => response.MOBO_Form_Factor),
+          catchError(error => {
+            console.error('Error fetching motherboard form factor:', error);
+            return throwError(error);
+          })
+        );
+      })
+    );
+  
+    // Switch to fetching max memory based on the motherboard's max memory ID
+    const maxMemory$ = motherboard$.pipe(
+      switchMap(motherboard => {
+        return this.http.get<any>(`http://localhost:8000/api/mobo_max_memory/${motherboard.Motherboard_max_memory_ID}`).pipe(
+          map(response => response.MOBO_Max_Memory),
+          catchError(error => {
+            console.error('Error fetching motherboard max memory:', error);
+            return throwError(error);
+          })
+        );
+      })
+    );
+  
+    // Switch to fetching memory slots based on the motherboard's memory slots ID
+    const memorySlots$ = motherboard$.pipe(
+      switchMap(motherboard => {
+        return this.http.get<any>(`http://localhost:8000/api/mobo_memory_slots/${motherboard.Motherboard_memory_slots_ID}`).pipe(
+          map(response => response.MOBO_Memory_Slots),
+          catchError(error => {
+            console.error('Error fetching motherboard memory slots:', error);
+            return throwError(error);
+          })
+        );
+      })
+    );
+
+    const color$ = motherboard$.pipe(
+      switchMap(motherboard => {
+        return this.fetchColorName(motherboard.Motherboard_color_ID).pipe(
+          map(colorName => colorName.Color),
+          catchError(error => {
+            console.error('Error fetching motherboard color:', error);
+            return throwError(error);
+          })
+        );
+      })
+    );
+  
+    // Combine all observables and map the results
+    return forkJoin({ motherboard: motherboard$, color: color$, formFactor: formFactor$, maxMemory: maxMemory$, memorySlots: memorySlots$ }).pipe(
+      map(({ motherboard, color, formFactor, maxMemory, memorySlots }) => {
+        // Map additional properties to the motherboard object
+        motherboard.Motherboard_color = color;
+        motherboard.Motherboard_form_factor = formFactor;
+        motherboard.Motherboard_max_memory = maxMemory;
+        motherboard.Motherboard_memory_slots = memorySlots;
+        return motherboard;
+      }),
+      catchError(error => {
+        console.error('Error fetching motherboard details:', error);
+        return throwError(error);
+      })
+    );
+  }
+  
+
+  updateMotherboardDetails(motherboardId: number | null): void {
+    if (motherboardId) {
+      this.fetchMotherboardDetails(motherboardId).subscribe(
+        (data) => {
+          this.motherboardDetails = data;
+        },
+        (error) => {
+          console.error('Error fetching motherboard details:', error);
+          this.motherboardDetails = null;
+        }
+      );
+    } else {
+      this.motherboardDetails = null;
+    }
+  }  
+
+
   fetchMemories(): void {
     this.http.get<any[]>('http://localhost:8000/api/memory').subscribe(
       data => {
@@ -174,11 +311,34 @@ export class BuilderComponent implements OnInit {
   fetchMemoryDetails(memoryId: number): Observable<Memory> {
     return this.http.get<Memory>(`http://localhost:8000/api/memory/${memoryId}`).pipe(
       switchMap(memory => {
-        return this.fetchColorName(memory.Memory_color_ID).pipe(
-          map(colorName => {
-            // Include only the "Color" value in the cooler object
-            memory.Memory_color_name = colorName.Color;
+        // Fetch color name based on Memory_color_ID
+        const colorName$ = this.fetchColorName(memory.Memory_color_ID).pipe(
+          map(colorName => colorName.Color),
+          catchError(error => {
+            console.error('Error fetching color name:', error);
+            return throwError(error);
+          })
+        );
+  
+        // Fetch memory module name based on Memory_modules_ID
+        const moduleName$ = this.fetchMemoryModules(memory.Memory_modules_ID).pipe(
+          map(moduleName => moduleName.MemoryModule),
+          catchError(error => {
+            console.error('Error fetching memory module name:', error);
+            return throwError(error);
+          })
+        );
+  
+        // Combine the color and module names into the memory object
+        return forkJoin([colorName$, moduleName$]).pipe(
+          map(([colorName, moduleName]) => {
+            memory.Memory_color_name = colorName;
+            memory.Memory_modules = moduleName; // Directly assign moduleName
             return memory;
+          }),                    
+          catchError(error => {
+            console.error('Error combining color and module names:', error);
+            return throwError(error);
           })
         );
       }),
@@ -188,6 +348,17 @@ export class BuilderComponent implements OnInit {
       })
     );
   }
+
+  fetchMemoryModules(memoryModuleId: number): Observable<{ MemoryModule: string }> {
+    return this.http.get<any>(`http://localhost:8000/api/memory_modules/${memoryModuleId}`).pipe(
+      map(response => ({ MemoryModule: response.memory_modules.split(',') })), // Split the string into an array
+      catchError(error => {
+        console.error('Error fetching memory module name:', error);
+        return throwError(error);
+      })
+    );
+  }  
+  
 
   updateMemoryDetails(memoryId: number | null): void {
     if (memoryId) {
@@ -283,6 +454,80 @@ fetchColorName(colorId: number): Observable<{ Color: string }> {
       }
     );
   }
+
+  fetchGPUDetails(gpuId: number): Observable<GraphicsCard> {
+    // Fetch GPU details
+    const gpu$ = this.http.get<GraphicsCard>(`http://localhost:8000/api/gpu/${gpuId}`);
+  
+    // Fetch GPU memory details
+    const memory$ = gpu$.pipe(
+      switchMap(gpu => {
+        return this.fetchGPUMemory(gpu.GPU_memory_ID).pipe(
+          map(memoryDetails => memoryDetails.GPU_Memory),
+          catchError(error => {
+            console.error('Error fetching GPU memory details:', error);
+            return throwError(error);
+          })
+        );
+      })
+    );
+  
+    // Fetch GPU color details
+    const color$ = gpu$.pipe(
+      switchMap(gpu => {
+        return this.fetchColorName(gpu.GPU_color_ID).pipe(
+          map(colorName => colorName.Color),
+          catchError(error => {
+            console.error('Error fetching GPU color:', error);
+            return throwError(error);
+          })
+        );
+      })
+    );
+  
+    // Combine GPU details with memory and color
+    return forkJoin({ gpu: gpu$, memory: memory$, color: color$ }).pipe(
+      map(({ gpu, memory, color }) => {
+        // Assign memory and color to the GPU object
+        gpu.GPU_memory = memory;
+        gpu.GPU_color = color;
+        return gpu;
+      }),
+      catchError(error => {
+        console.error('Error fetching GPU details:', error);
+        return throwError(error);
+      })
+    );
+  }
+   
+  
+  fetchGPUMemory(gpumemoryId: number): Observable<{ GPU_Memory: string }> {
+    return this.http.get<{ GPU_Memory: string }>(`http://localhost:8000/api/gpu_memory/${gpumemoryId}`).pipe(
+      catchError(error => {
+        console.error('Error fetching GPU memory:', error);
+        return throwError(error);
+      })
+    );
+  }  
+  
+
+  updateGraphicsCardDetails(graphicsCardId: number | null): void {
+    if (graphicsCardId) {
+      this.fetchGPUDetails(graphicsCardId).subscribe(
+        (data) => {
+          this.graphicsCardDetails = data;
+        },
+        (error) => {
+          console.error('Error fetching GPU details:', error);
+          this.graphicsCardDetails = null;
+        }
+      );
+    } else {
+      this.graphicsCardDetails = null;
+    }
+  }
+  
+  
   fetchHardDrives(): void {
     this.http.get<any[]>('http://localhost:8000/api/internal_hard_drive').subscribe(
       data => {
@@ -293,6 +538,143 @@ fetchColorName(colorId: number): Observable<{ Color: string }> {
       }
     );
   }
+
+  fetchHardDriveDetails(hardDriveId: number): Observable<IHD> {
+    return this.http.get<IHD>(`http://localhost:8000/api/internal_hard_drive/${hardDriveId}`).pipe(
+      switchMap(hardDrive => {
+        // Fetch the hard drive capacity
+        const capacity$ = this.fetchIhdCapacity(hardDrive.Hard_drive_capacity_ID).pipe(
+          catchError(error => {
+            console.error('Error fetching hard drive capacity:', error);
+            return throwError(error);
+          })
+        );
+
+        const type$ = this.fetchIhdType(hardDrive.Hard_drive_type_ID).pipe(
+          catchError(error => {
+            console.error('Error fetching hard drive type:', error);
+            return throwError(error);
+          })
+        );
+  
+        // Fetch the hard drive form factor
+        const formFactor$ = this.fetchIhdFormFactor(hardDrive.Hard_drive_form_factor_ID).pipe(
+          catchError(error => {
+            console.error('Error fetching hard drive form factor:', error);
+            return throwError(error);
+          })
+        );
+  
+        // Fetch the hard drive interface
+        const interfaceType$ = this.fetchIhdInterface(hardDrive.Hard_drive_interface_ID).pipe(
+          catchError(error => {
+            console.error('Error fetching hard drive interface:', error);
+            return throwError(error);
+          })
+        );
+  
+        // Combine all observables and map the results
+        return forkJoin([capacity$, formFactor$, interfaceType$, type$]).pipe(
+          map(([capacity, formFactor, interfaceType, type]) => {
+            // Map additional properties to the hard drive object
+            hardDrive.Hard_drive_capacity = capacity;
+            hardDrive.Hard_drive_form_factor = formFactor;
+            hardDrive.Hard_drive_interface = interfaceType;
+            hardDrive.Hard_drive_type = type;
+            return hardDrive;
+          }),
+          catchError(error => {
+            console.error('Error combining hard drive details:', error);
+            return throwError(error);
+          })
+        );
+      }),
+      catchError(error => {
+        console.error('Error fetching hard drive details:', error);
+        return throwError(error);
+      })
+    );
+  }
+
+  updateHardDriveDetails(hardDriveId: number | null): void {
+    if (hardDriveId) {
+      this.fetchHardDriveDetails(hardDriveId).subscribe(
+        (data) => {
+          this.hardDriveDetails = data;
+          this.updateHardDriveProperties(data);
+        },
+        (error) => {
+          console.error('Error fetching hard drive details:', error);
+          this.hardDriveDetails = null;
+        }
+      );
+    } else {
+      this.hardDriveDetails = null;
+    }
+  }
+  
+  private updateHardDriveProperties(hardDrive: IHD): void {
+    forkJoin({
+      capacity: this.fetchIhdCapacity(hardDrive.Hard_drive_capacity_ID),
+      type: this.fetchIhdType(hardDrive.Hard_drive_type_ID),
+      formFactor: this.fetchIhdFormFactor(hardDrive.Hard_drive_form_factor_ID),
+      interface: this.fetchIhdInterface(hardDrive.Hard_drive_interface_ID)
+    }).subscribe(
+      (data) => {
+        this.hardDriveDetails!.Hard_drive_capacity = data.capacity;
+        this.hardDriveDetails!.Hard_drive_type = data.type;
+        this.hardDriveDetails!.Hard_drive_form_factor = data.formFactor;
+        this.hardDriveDetails!.Hard_drive_interface = data.interface;
+      },
+      (error) => {
+        console.error('Error updating internal hard drive properties:', error);
+      }
+    );
+  }
+  
+
+  fetchIhdCapacity(capacityId: number): Observable<string> {
+    return this.http.get<{ IHD_Capacity: string }>(`http://localhost:8000/api/ihd_capacity/${capacityId}`).pipe(
+      map(response => response.IHD_Capacity),
+      catchError(error => {
+        console.error('Error fetching internal hard drive capacity:', error);
+        return throwError(error);
+      })
+    );
+  }
+  
+  fetchIhdType(typeId: number): Observable<string> {
+    return this.http.get<{ IHD_Type: string }>(`http://localhost:8000/api/ihd_type/${typeId}`).pipe(
+      map(response => response.IHD_Type),
+      catchError(error => {
+        console.error('Error fetching internal hard drive type:', error);
+        return throwError(error);
+      })
+    );
+  }
+  
+  fetchIhdFormFactor(formFactorId: number): Observable<string> {
+    return this.http.get<{ ihd_form_factor: string }>(`http://localhost:8000/api/ihd_form_factor/${formFactorId}`).pipe(
+      map(response => response.ihd_form_factor),
+      catchError(error => {
+        console.error('Error fetching internal hard drive form factor:', error);
+        return throwError(error);
+      })
+    );
+  }
+  
+  fetchIhdInterface(interfaceId: number): Observable<string> {
+    return this.http.get<{ ihd_interface: string }>(`http://localhost:8000/api/ihd_interface/${interfaceId}`).pipe(
+      map(response => response.ihd_interface),
+      catchError(error => {
+        console.error('Error fetching internal hard drive interface:', error);
+        return throwError(error);
+      })
+    );
+  }
+  
+  
+
   fetchCases(): void {
     this.http.get<any[]>('http://localhost:8000/api/pc_case').subscribe(
       data => {

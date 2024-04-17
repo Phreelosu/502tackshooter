@@ -34,9 +34,9 @@
                   <h4>Cooler Details</h4>
                   <ul class="list-unstyled">
                       <li><strong>Price:</strong> ${{ coolerDetails.Cooler_price }}</li>
-                      <li><strong>Cooler Minimum RPM:</strong> {{ coolerDetails.Cooler_RPM_Min }}</li>
-                      <li><strong>Cooler Maximum RPM:</strong> {{ coolerDetails.Cooler_RPM_Max }}</li>
-                      <li><strong>Color:</strong> {{ coolerDetails.Cooler_color_name }}</li> <!-- Check this line -->
+                      <li><strong>Minimum RPM:</strong> {{ coolerDetails.Cooler_RPM_Min }}</li>
+                      <li><strong>Maximum RPM:</strong> {{ coolerDetails.Cooler_RPM_Max }}</li>
+                      <li><strong>Color:</strong> {{ coolerDetails.Cooler_color_name }}</li>
                   </ul>
               </div>
           </li>
@@ -52,7 +52,8 @@
               <h4>Memory Details</h4>
               <ul class="list-unstyled">
                 <li><strong>Price:</strong> ${{ memoryDetails?.Memory_price }}</li>
-                <li><strong>Memory Speed:</strong> {{ memoryDetails?.Memory_speed }}</li>
+                <li><strong>Speed:</strong> {{ memoryDetails?.Memory_speed }}</li>
+                <li><strong>Modules:</strong> {{ memoryDetails?.Memory_modules}}</li>
                 <li><strong>Color:</strong> {{ memoryDetails?.Memory_color_name }}</li> 
                 <li><strong>First word latency:</strong> {{ memoryDetails?.First_word_latency }}</li>
                 <li><strong>CAS latency:</strong> {{ memoryDetails?.CAS_latency }}</li>
@@ -62,26 +63,59 @@
 
             <li class="list-group-item">
               <label for="motherboard">Motherboard</label>
-              <select id="motherboard" class="form-select" [(ngModel)]="selectedMotherboard" [disabled]="!isLoggedIn()">
+              <select id="motherboard" class="form-select" [(ngModel)]="selectedMotherboard" [disabled]="!isLoggedIn()" (ngModelChange)="updateMotherboardDetails(selectedMotherboard)">
                 <option [ngValue]="null" disabled selected>Choose a Motherboard</option>
                 <option *ngFor="let motherboard of motherboards" [value]="motherboard.id">{{ motherboard.Motherboard_name }}</option>
             </select>              
+            <div *ngIf="selectedMotherboard" class="details">
+              <h4>Motherboard Details</h4>
+              <ul class="list-unstyled">
+                <li><strong>Price:</strong> ${{ motherboardDetails?.Motherboard_price }}</li>
+                <li><strong>Socket:</strong> {{ motherboardDetails?.Motherboard_socket }}</li>
+                <li><strong>Form Factor:</strong> {{ motherboardDetails?.Motherboard_form_factor}}</li>
+                <li><strong>Max memory:</strong> {{ motherboardDetails?.Motherboard_max_memory }}</li> 
+                <li><strong>Memory slots:</strong> {{ motherboardDetails?.Motherboard_memory_slots }}</li>
+                <li><strong>Color:</strong> {{ motherboardDetails?.Motherboard_color }}</li>
+            </ul>
+          </div>
             </li>
 
             <li class="list-group-item">
               <label for="gpu">Graphics Card</label>
-              <select id="gpu" class="form-select" [(ngModel)]="selectedGraphicsCard" [disabled]="!isLoggedIn()">
+              <select id="gpu" class="form-select" [(ngModel)]="selectedGraphicsCard" [disabled]="!isLoggedIn()" (ngModelChange)="updateGraphicsCardDetails(selectedGraphicsCard)">
                 <option [ngValue]="null" disabled selected>Choose a Graphics Card</option>
                 <option *ngFor="let gpu of graphicsCards" [value]="gpu.id">{{ gpu.GPU_name }} {{gpu.GPU_chipset}}</option>
             </select> 
+            <div *ngIf="selectedGraphicsCard" class="details">
+              <h4>Graphics Card Details</h4>
+              <ul class="list-unstyled">
+                <li><strong>Price:</strong> ${{ graphicsCardDetails?.GPU_price }}</li>
+                <li><strong>Memory:</strong> {{ graphicsCardDetails?.GPU_memory }}</li>
+                <li><strong>Core Clock:</strong> {{ graphicsCardDetails?.GPU_core_clock}}</li>
+                <li><strong>Boost Clock:</strong> {{ graphicsCardDetails?.GPU_boost_clock }}</li> 
+                <li><strong>Length:</strong> {{ graphicsCardDetails?.GPU_length }}</li>
+                <li><strong>Color:</strong> {{ graphicsCardDetails?.GPU_color }}</li>
+            </ul>
+          </div>
             </li>
 
             <li class="list-group-item">
               <label for="ihd">Hard Drive / Storage</label>
-              <select id="ihd" class="form-select" [(ngModel)]="selectedhardDrive" [disabled]="!isLoggedIn()">
+              <select id="ihd" class="form-select" [(ngModel)]="selectedhardDrive" [disabled]="!isLoggedIn()" (ngModelChange)="updateHardDriveDetails(selectedhardDrive)">
                 <option [ngValue]="null" disabled selected>Choose a Hard Drive</option>
                 <option *ngFor="let internal_hard_drive of hardDrives" [value]="internal_hard_drive.id">{{ internal_hard_drive.Hard_drive_name }}</option>
             </select>
+            <div *ngIf="selectedhardDrive" class="details">
+              <h4>Hard Drive Details</h4>
+              <ul class="list-unstyled">
+                <li><strong>Price:</strong> ${{ hardDriveDetails?.Hard_drive_price }}</li>
+                <li><strong>Capacity:</strong> {{ hardDriveDetails?.Hard_drive_capacity }}</li>
+                <li><strong>Type:</strong> {{ hardDriveDetails?.Hard_drive_type}}</li>
+                <li><strong>Cache:</strong> {{ hardDriveDetails?.Hard_drive_cache }}</li> 
+                <li><strong>Form Factor:</strong> {{ hardDriveDetails?.Hard_drive_form_factor }}</li>
+                <li><strong>Interface:</strong> {{ hardDriveDetails?.Hard_drive_interface }}</li>
+            </ul>
+          </div>
             </li>
 
             <li class="list-group-item">
