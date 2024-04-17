@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('CPU', function (Blueprint $table) {
             $table->id();
             $table->string('CPU_name', 255);
+            $table->decimal('CPU_price')->nullable();
             $table->integer('CPU_core_count');
             $table->float('CPU_core_clock')->nullable();
             $table->float('CPU_boost_clock')->nullable();
