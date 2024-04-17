@@ -3,11 +3,46 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { SignupService } from '../signup.service';
+import { Observable } from 'rxjs/internal/Observable';
+import { catchError, map, switchMap, tap, throwError } from 'rxjs';
 
 interface ApiResponse {
   success: boolean;
   data: any; // Adjust the type of data as per your API response structure
   message: string; // Add a message property
+}
+
+interface Processor {
+  id: number;
+  CPU_name: string;
+  CPU_price: number;
+  CPU_core_count: number;
+  CPU_core_clock: number;
+  CPU_boost_clock: number;
+  CPU_graphics: string;
+}
+
+interface Cooler {
+  id: number;
+  Cooler_name: string;
+  Cooler_price: number;
+  Cooler_RPM_Min: number;
+  Cooler_RPM_Max: number;
+  Cooler_color_ID: number;
+  Cooler_color_name: string;
+}
+
+interface Memory {
+  id: number;
+  Memory_name: string;
+  Memory_price: number;
+  Memory_speed: number;
+  Memory_modules_ID: number;
+  Memory_modules: string;
+  Memory_color_ID: number;
+  Memory_color_name: string;
+  First_word_latency: number;
+  CAS_latency: number;
 }
 
 @Component({
@@ -17,9 +52,12 @@ interface ApiResponse {
 })
 export class BuilderComponent implements OnInit {
   processors: any[] = [];
+  processorDetails: Processor | null = null;
   motherboards: any[] = [];
   memories: any[] = [];
+  memoryDetails: Memory | null = null;
   processorCoolers: any[] = [];
+  coolerDetails: Cooler | null = null;
   powerSupplies: any[] = [];
   graphicsCards: any[] = [];
   hardDrives: any[] = [];
@@ -76,7 +114,6 @@ export class BuilderComponent implements OnInit {
   fetchProcessors(): void {
     this.http.get<any[]>('http://localhost:8000/api/cpu').subscribe(
       data => {
-        console.log('Fetched processors:', data);
         this.processors = data;
       },
       error => {
@@ -84,6 +121,33 @@ export class BuilderComponent implements OnInit {
       }
     );
   }
+
+  fetchProcessorDetails(processorId: number): Observable<Processor> {
+    return this.http.get<Processor>(`http://localhost:8000/api/cpu/${processorId}`).pipe(
+      catchError(error => {
+        console.error('Error fetching processor details:', error);
+        return throwError(error);
+      })
+    );
+  }
+  
+
+  updateProcessorDetails(processorId: number | null): void {
+    if (processorId !== null) {
+        // Fetch processor details
+        this.fetchProcessorDetails(processorId).subscribe(
+            (data) => {
+                this.processorDetails = data;
+            },
+            (error) => {
+                console.error('Error fetching processor details:', error);
+                this.processorDetails = null;
+            }
+        );
+    } else {
+        this.processorDetails = null;
+    }
+}
   
   fetchMotherboards(): void {
     this.http.get<any[]>('http://localhost:8000/api/motherboard').subscribe(
@@ -95,6 +159,7 @@ export class BuilderComponent implements OnInit {
       }
     );
   }
+
   fetchMemories(): void {
     this.http.get<any[]>('http://localhost:8000/api/memory').subscribe(
       data => {
@@ -105,6 +170,42 @@ export class BuilderComponent implements OnInit {
       }
     );
   }
+
+  fetchMemoryDetails(memoryId: number): Observable<Memory> {
+    return this.http.get<Memory>(`http://localhost:8000/api/memory/${memoryId}`).pipe(
+      switchMap(memory => {
+        return this.fetchColorName(memory.Memory_color_ID).pipe(
+          map(colorName => {
+            // Include only the "Color" value in the cooler object
+            memory.Memory_color_name = colorName.Color;
+            return memory;
+          })
+        );
+      }),
+      catchError(error => {
+        console.error('Error fetching memory details:', error);
+        return throwError(error);
+      })
+    );
+  }
+
+  updateMemoryDetails(memoryId: number | null): void {
+    if (memoryId) {
+        this.fetchMemoryDetails(memoryId).subscribe(
+            (data) => {
+                this.memoryDetails = data;
+            },
+            (error) => {
+                console.error('Error fetching memory details:', error);
+                this.memoryDetails = null;
+            }
+        );
+    } else {
+        this.memoryDetails = null;
+    }
+}
+
+
   fetchProcessorCoolers(): void {
     this.http.get<any[]>('http://localhost:8000/api/cpu_cooler').subscribe(
       data => {
@@ -115,6 +216,53 @@ export class BuilderComponent implements OnInit {
       }
     );
   }
+
+  updateCoolerDetails(coolerId: number | null): void {
+    if (coolerId) {
+        this.fetchCoolerDetails(coolerId).subscribe(
+            (data) => {
+                this.coolerDetails = data;
+            },
+            (error) => {
+                console.error('Error fetching cooler details:', error);
+                this.coolerDetails = null;
+            }
+        );
+    } else {
+        this.coolerDetails = null;
+    }
+}
+
+fetchCoolerDetails(coolerId: number): Observable<Cooler> {
+  return this.http.get<Cooler>(`http://localhost:8000/api/cpu_cooler/${coolerId}`).pipe(
+    switchMap(cooler => {
+      // Fetch the color name based on Cooler_color_ID
+      return this.fetchColorName(cooler.Cooler_color_ID).pipe(
+        map(colorName => {
+          // Include only the "Color" value in the cooler object
+          cooler.Cooler_color_name = colorName.Color;
+          return cooler;
+        })
+      );
+    }),
+    catchError(error => {
+      console.error('Error fetching cooler details:', error);
+      return throwError(error);
+    })
+  );
+}
+
+fetchColorName(colorId: number): Observable<{ Color: string }> {
+  return this.http.get<{ Color: string }>(`http://localhost:8000/api/colors/${colorId}`).pipe(
+    catchError(error => {
+      console.error('Error fetching color name:', error);
+      return throwError(error);
+    })
+  );
+}
+
+
+
   fetchPowerSupplies(): void {
     this.http.get<any[]>('http://localhost:8000/api/psu').subscribe(
       data => {
@@ -253,9 +401,12 @@ export class BuilderComponent implements OnInit {
         data => {
           console.log('Received configuration data:', data);
       this.selectedProcessor = this.findComponentId(this.processors, data.cpu);
+      this.updateProcessorDetails(this.selectedProcessor);
       this.selectedMotherboard = this.findComponentId(this.motherboards, data.motherboard);
       this.selectedMemory = this.findComponentId(this.memories, data.memory);
+      this.updateMemoryDetails(this.selectedMemory);
       this.selectedProcessorCooler = this.findComponentId(this.processorCoolers, data.cpu_cooler);
+      this.updateCoolerDetails(this.selectedProcessorCooler);
       this.selectedPowerSupply = this.findComponentId(this.powerSupplies, data.psu);
       this.selectedGraphicsCard = this.findComponentId(this.graphicsCards, data.gpu);
       this.selectedhardDrive = this.findComponentId(this.hardDrives, data.internal_hard_drive);

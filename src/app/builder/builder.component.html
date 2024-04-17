@@ -8,26 +8,56 @@
 
             <li class="list-group-item">
               <label for="processor">Processor</label>
-              <select id="processor" class="form-select" [(ngModel)]="selectedProcessor" [disabled]="!isLoggedIn()">
-                <option [ngValue]="null" disabled>Choose a Processor</option>
-                <option *ngFor="let processor of processors" [value]="processor.id">{{ processor.CPU_name }}</option>
-              </select>              
+              <select id="processor" class="form-select" [(ngModel)]="selectedProcessor" [disabled]="!isLoggedIn()" (change)="updateProcessorDetails(selectedProcessor)">
+                  <option [ngValue]="null" disabled>Choose a Processor</option>
+                  <option *ngFor="let processor of processors" [value]="processor.id">{{ processor.CPU_name }}</option>
+              </select>  
+              <div *ngIf="selectedProcessor" class="details">
+                <h4>Processor Details</h4>
+                <ul class="list-unstyled">
+                    <li><strong>Price:</strong> ${{ processorDetails?.CPU_price }}</li>
+                    <li><strong>Core Count:</strong> {{ processorDetails?.CPU_core_count }}</li>
+                    <li><strong>Core Clock:</strong> {{ processorDetails?.CPU_core_clock }} GHz</li>
+                    <li><strong>Boost Clock:</strong> {{ processorDetails?.CPU_boost_clock }} GHz</li>
+                    <li><strong>Graphics:</strong> {{ processorDetails?.CPU_graphics }}</li>
+                </ul>
+            </div>
             </li>
-
+          
             <li class="list-group-item">
-              <label for="cooler">Processor Cooler</label>
-              <select id="cooler" class="form-select" [(ngModel)]="selectedProcessorCooler" [disabled]="!isLoggedIn()">
-                <option [ngValue]="null" disabled selected>Choose a Cooler</option>
-                <option *ngFor="let cpu_cooler of processorCoolers" [value]="cpu_cooler.id">{{ cpu_cooler.Cooler_name }}</option>
-            </select> 
-            </li>
+              <label for="cooler">Cooler</label>
+              <select id="cooler" class="form-select" [(ngModel)]="selectedProcessorCooler" [disabled]="!isLoggedIn()" (change)="updateCoolerDetails(selectedProcessorCooler)">
+                  <option [ngValue]="null" disabled>Choose a Cooler</option>
+                  <option *ngFor="let cooler of processorCoolers" [value]="cooler.id">{{ cooler.Cooler_name }}</option>
+              </select>
+              <div *ngIf="coolerDetails" class="details">
+                  <h4>Cooler Details</h4>
+                  <ul class="list-unstyled">
+                      <li><strong>Price:</strong> ${{ coolerDetails.Cooler_price }}</li>
+                      <li><strong>Cooler Minimum RPM:</strong> {{ coolerDetails.Cooler_RPM_Min }}</li>
+                      <li><strong>Cooler Maximum RPM:</strong> {{ coolerDetails.Cooler_RPM_Max }}</li>
+                      <li><strong>Color:</strong> {{ coolerDetails.Cooler_color_name }}</li> <!-- Check this line -->
+                  </ul>
+              </div>
+          </li>
+                         
 
             <li class="list-group-item">
               <label for="memory">Memory</label>
-              <select id="memory" class="form-select" [(ngModel)]="selectedMemory" [disabled]="!isLoggedIn()">
+              <select id="memory" class="form-select" [(ngModel)]="selectedMemory" (ngModelChange)="updateMemoryDetails(selectedMemory)" [disabled]="!isLoggedIn()">
                 <option [ngValue]="null" disabled selected>Choose a Memory</option>
                 <option *ngFor="let memory of memories" [value]="memory.id">{{ memory.Memory_name }}</option>
-            </select> 
+            </select>            
+            <div *ngIf="selectedMemory" class="details">
+              <h4>Memory Details</h4>
+              <ul class="list-unstyled">
+                <li><strong>Price:</strong> ${{ memoryDetails?.Memory_price }}</li>
+                <li><strong>Memory Speed:</strong> {{ memoryDetails?.Memory_speed }}</li>
+                <li><strong>Color:</strong> {{ memoryDetails?.Memory_color_name }}</li> 
+                <li><strong>First word latency:</strong> {{ memoryDetails?.First_word_latency }}</li>
+                <li><strong>CAS latency:</strong> {{ memoryDetails?.CAS_latency }}</li>
+            </ul>
+          </div>
             </li>
 
             <li class="list-group-item">
